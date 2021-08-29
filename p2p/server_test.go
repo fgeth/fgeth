@@ -27,12 +27,12 @@ import (
 	"testing"
 	"time"
 
-	"github.com/ethereum/go-ethereum/crypto"
-	"github.com/ethereum/go-ethereum/internal/testlog"
-	"github.com/ethereum/go-ethereum/log"
-	"github.com/ethereum/go-ethereum/p2p/enode"
-	"github.com/ethereum/go-ethereum/p2p/enr"
-	"github.com/ethereum/go-ethereum/p2p/rlpx"
+	"github.com/fgeth/fgeth/crypto"
+	"github.com/fgeth/fgeth/internal/testlog"
+	"github.com/fgeth/fgeth/log"
+	"github.com/fgeth/fgeth/p2p/enode"
+	"github.com/fgeth/fgeth/p2p/enr"
+	"github.com/fgeth/fgeth/p2p/rlpx"
 )
 
 type testTransport struct {

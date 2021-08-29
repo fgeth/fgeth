@@ -26,13 +26,13 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/ethereum/go-ethereum/accounts"
-	"github.com/ethereum/go-ethereum/core/rawdb"
-	"github.com/ethereum/go-ethereum/ethdb"
-	"github.com/ethereum/go-ethereum/event"
-	"github.com/ethereum/go-ethereum/log"
-	"github.com/ethereum/go-ethereum/p2p"
-	"github.com/ethereum/go-ethereum/rpc"
+	"github.com/fgeth/fgeth/accounts"
+	"github.com/fgeth/fgeth/core/rawdb"
+	"github.com/fgeth/fgeth/ethdb"
+	"github.com/fgeth/fgeth/event"
+	"github.com/fgeth/fgeth/log"
+	"github.com/fgeth/fgeth/p2p"
+	"github.com/fgeth/fgeth/rpc"
 	"github.com/prometheus/tsdb/fileutil"
 )
 

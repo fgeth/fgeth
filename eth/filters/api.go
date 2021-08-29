@@ -25,13 +25,13 @@ import (
 	"sync"
 	"time"
 
-	"github.com/ethereum/go-ethereum"
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/common/hexutil"
-	"github.com/ethereum/go-ethereum/core/types"
-	"github.com/ethereum/go-ethereum/ethdb"
-	"github.com/ethereum/go-ethereum/event"
-	"github.com/ethereum/go-ethereum/rpc"
+	"github.com/fgeth/fgeth"
+	"github.com/fgeth/fgeth/common"
+	"github.com/fgeth/fgeth/common/hexutil"
+	"github.com/fgeth/fgeth/core/types"
+	"github.com/fgeth/fgeth/ethdb"
+	"github.com/fgeth/fgeth/event"
+	"github.com/fgeth/fgeth/rpc"
 )
 
 // filter is a helper struct that holds meta information over the filter type

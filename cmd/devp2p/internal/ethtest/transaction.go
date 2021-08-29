@@ -22,11 +22,11 @@ import (
 	"strings"
 	"time"
 
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/core/types"
-	"github.com/ethereum/go-ethereum/crypto"
-	"github.com/ethereum/go-ethereum/internal/utesting"
-	"github.com/ethereum/go-ethereum/params"
+	"github.com/fgeth/fgeth/common"
+	"github.com/fgeth/fgeth/core/types"
+	"github.com/fgeth/fgeth/crypto"
+	"github.com/fgeth/fgeth/internal/utesting"
+	"github.com/fgeth/fgeth/params"
 )
 
 //var faucetAddr = common.HexToAddress("0x71562b71999873DB5b286dF957af199Ec94617F7")

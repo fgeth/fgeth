@@ -25,20 +25,20 @@ import (
 	"strings"
 	"time"
 
-	"github.com/ethereum/go-ethereum/accounts"
-	"github.com/ethereum/go-ethereum/accounts/keystore"
-	"github.com/ethereum/go-ethereum/cmd/utils"
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/console/prompt"
-	"github.com/ethereum/go-ethereum/eth"
-	"github.com/ethereum/go-ethereum/eth/downloader"
-	"github.com/ethereum/go-ethereum/ethclient"
-	"github.com/ethereum/go-ethereum/internal/debug"
-	"github.com/ethereum/go-ethereum/internal/ethapi"
-	"github.com/ethereum/go-ethereum/internal/flags"
-	"github.com/ethereum/go-ethereum/log"
-	"github.com/ethereum/go-ethereum/metrics"
-	"github.com/ethereum/go-ethereum/node"
+	"github.com/fgeth/fgeth/accounts"
+	"github.com/fgeth/fgeth/accounts/keystore"
+	"github.com/fgeth/fgeth/cmd/utils"
+	"github.com/fgeth/fgeth/common"
+	"github.com/fgeth/fgeth/console/prompt"
+	"github.com/fgeth/fgeth/eth"
+	"github.com/fgeth/fgeth/eth/downloader"
+	"github.com/fgeth/fgeth/ethclient"
+	"github.com/fgeth/fgeth/internal/debug"
+	"github.com/fgeth/fgeth/internal/ethapi"
+	"github.com/fgeth/fgeth/internal/flags"
+	"github.com/fgeth/fgeth/log"
+	"github.com/fgeth/fgeth/metrics"
+	"github.com/fgeth/fgeth/node"
 	"gopkg.in/urfave/cli.v1"
 )
 
@@ -202,10 +202,10 @@ var (
 )
 
 func init() {
-	// Initialize the CLI app and start Geth
-	app.Action = geth
+	// Initialize the CLI app and start FGeth
+	app.Action = fgeth
 	app.HideVersion = true // we have a command to print the version
-	app.Copyright = "Copyright 2013-2021 The go-ethereum Authors"
+	app.Copyright = "Copyright 2021 The FG-ethereum Authors"
 	app.Commands = []cli.Command{
 		// See chaincmd.go:
 		initCommand,
@@ -308,7 +308,7 @@ func prepare(ctx *cli.Context) {
 // geth is the main entry point into the system if no special subcommand is ran.
 // It creates a default node based on the command line arguments and runs it in
 // blocking mode, waiting for it to be shut down.
-func geth(ctx *cli.Context) error {
+func fgeth(ctx *cli.Context) error {
 	if args := ctx.Args(); len(args) > 0 {
 		return fmt.Errorf("invalid command: %q", args[0])
 	}

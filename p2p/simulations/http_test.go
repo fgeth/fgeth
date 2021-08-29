@@ -29,13 +29,13 @@ import (
 	"testing"
 	"time"
 
-	"github.com/ethereum/go-ethereum/event"
-	"github.com/ethereum/go-ethereum/log"
-	"github.com/ethereum/go-ethereum/node"
-	"github.com/ethereum/go-ethereum/p2p"
-	"github.com/ethereum/go-ethereum/p2p/enode"
-	"github.com/ethereum/go-ethereum/p2p/simulations/adapters"
-	"github.com/ethereum/go-ethereum/rpc"
+	"github.com/fgeth/fgeth/event"
+	"github.com/fgeth/fgeth/log"
+	"github.com/fgeth/fgeth/node"
+	"github.com/fgeth/fgeth/p2p"
+	"github.com/fgeth/fgeth/p2p/enode"
+	"github.com/fgeth/fgeth/p2p/simulations/adapters"
+	"github.com/fgeth/fgeth/rpc"
 	"github.com/mattn/go-colorable"
 )
 

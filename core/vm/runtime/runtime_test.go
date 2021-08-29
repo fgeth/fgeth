@@ -24,16 +24,16 @@ import (
 	"testing"
 	"time"
 
-	"github.com/ethereum/go-ethereum/accounts/abi"
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/consensus"
-	"github.com/ethereum/go-ethereum/core"
-	"github.com/ethereum/go-ethereum/core/asm"
-	"github.com/ethereum/go-ethereum/core/rawdb"
-	"github.com/ethereum/go-ethereum/core/state"
-	"github.com/ethereum/go-ethereum/core/types"
-	"github.com/ethereum/go-ethereum/core/vm"
-	"github.com/ethereum/go-ethereum/params"
+	"github.com/fgeth/fgeth/accounts/abi"
+	"github.com/fgeth/fgeth/common"
+	"github.com/fgeth/fgeth/consensus"
+	"github.com/fgeth/fgeth/core"
+	"github.com/fgeth/fgeth/core/asm"
+	"github.com/fgeth/fgeth/core/rawdb"
+	"github.com/fgeth/fgeth/core/state"
+	"github.com/fgeth/fgeth/core/types"
+	"github.com/fgeth/fgeth/core/vm"
+	"github.com/fgeth/fgeth/params"
 )
 
 func TestDefaults(t *testing.T) {
@@ -611,7 +611,7 @@ func TestEip2929Cases(t *testing.T) {
 
 // TestColdAccountAccessCost test that the cold account access cost is reported
 // correctly
-// see: https://github.com/ethereum/go-ethereum/issues/22649
+// see: https://github.com/fgeth/fgeth/issues/22649
 func TestColdAccountAccessCost(t *testing.T) {
 	for i, tc := range []struct {
 		code []byte

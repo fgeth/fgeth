@@ -20,9 +20,9 @@ import (
 	"hash"
 	"sync/atomic"
 
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/common/math"
-	"github.com/ethereum/go-ethereum/log"
+	"github.com/fgeth/fgeth/common"
+	"github.com/fgeth/fgeth/common/math"
+	"github.com/fgeth/fgeth/log"
 )
 
 // Config are the configuration options for the Interpreter

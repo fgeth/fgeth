@@ -26,12 +26,12 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/common/prque"
-	"github.com/ethereum/go-ethereum/core/types"
-	"github.com/ethereum/go-ethereum/log"
-	"github.com/ethereum/go-ethereum/metrics"
-	"github.com/ethereum/go-ethereum/trie"
+	"github.com/fgeth/fgeth/common"
+	"github.com/fgeth/fgeth/common/prque"
+	"github.com/fgeth/fgeth/core/types"
+	"github.com/fgeth/fgeth/log"
+	"github.com/fgeth/fgeth/metrics"
+	"github.com/fgeth/fgeth/trie"
 )
 
 const (

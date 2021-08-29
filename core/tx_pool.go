@@ -24,15 +24,15 @@ import (
 	"sync"
 	"time"
 
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/common/prque"
-	"github.com/ethereum/go-ethereum/consensus/misc"
-	"github.com/ethereum/go-ethereum/core/state"
-	"github.com/ethereum/go-ethereum/core/types"
-	"github.com/ethereum/go-ethereum/event"
-	"github.com/ethereum/go-ethereum/log"
-	"github.com/ethereum/go-ethereum/metrics"
-	"github.com/ethereum/go-ethereum/params"
+	"github.com/fgeth/fgeth/common"
+	"github.com/fgeth/fgeth/common/prque"
+	"github.com/fgeth/fgeth/consensus/misc"
+	"github.com/fgeth/fgeth/core/state"
+	"github.com/fgeth/fgeth/core/types"
+	"github.com/fgeth/fgeth/event"
+	"github.com/fgeth/fgeth/log"
+	"github.com/fgeth/fgeth/metrics"
+	"github.com/fgeth/fgeth/params"
 )
 
 const (

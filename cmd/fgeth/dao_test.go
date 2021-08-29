@@ -23,9 +23,9 @@ import (
 	"path/filepath"
 	"testing"
 
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/core/rawdb"
-	"github.com/ethereum/go-ethereum/params"
+	"github.com/fgeth/fgeth/common"
+	"github.com/fgeth/fgeth/core/rawdb"
+	"github.com/fgeth/fgeth/params"
 )
 
 // Genesis block for nodes which don't care about the DAO fork (i.e. not configured)

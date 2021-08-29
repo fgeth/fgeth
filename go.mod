@@ -1,4 +1,4 @@
-module github.com/ethereum/go-ethereum
+module github.com/fgeth/fgeth
 
 go 1.15
 

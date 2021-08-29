@@ -22,9 +22,9 @@ import (
 	"path/filepath"
 	"runtime"
 
-	"github.com/ethereum/go-ethereum/p2p"
-	"github.com/ethereum/go-ethereum/p2p/nat"
-	"github.com/ethereum/go-ethereum/rpc"
+	"github.com/fgeth/fgeth/p2p"
+	"github.com/fgeth/fgeth/p2p/nat"
+	"github.com/fgeth/fgeth/rpc"
 )
 
 const (
@@ -73,7 +73,7 @@ func DefaultDataDir() string {
 			}
 			return filepath.Join(appdata, "Ethereum")
 		default:
-			return filepath.Join(home, ".ethereum")
+			return filepath.Join(home, ".fgethereum")
 		}
 	}
 	// As we cannot guess a stable location, return empty and handle later

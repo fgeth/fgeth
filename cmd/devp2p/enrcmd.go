@@ -28,9 +28,9 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/ethereum/go-ethereum/p2p/enode"
-	"github.com/ethereum/go-ethereum/p2p/enr"
-	"github.com/ethereum/go-ethereum/rlp"
+	"github.com/fgeth/fgeth/p2p/enode"
+	"github.com/fgeth/fgeth/p2p/enr"
+	"github.com/fgeth/fgeth/rlp"
 	"gopkg.in/urfave/cli.v1"
 )
 

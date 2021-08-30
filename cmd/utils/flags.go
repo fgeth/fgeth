@@ -141,7 +141,11 @@ var (
 	}
 	MainnetFlag = cli.BoolFlag{
 		Name:  "mainnet",
-		Usage: "Ethereum mainnet",
+		Usage: "FG-Ethereum mainnet",
+	}
+	DevnetFlag = cli.BoolFlag{
+		Name:  "devnet",
+		Usage: "FG-Ethereum Devnet",
 	}
 	GoerliFlag = cli.BoolFlag{
 		Name:  "goerli",

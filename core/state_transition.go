@@ -190,24 +190,45 @@ func (st *StateTransition) to() common.Address {
 }
 
 func (st *StateTransition) buyGas() error {
-	mgval := new(big.Int).SetUint64(st.msg.Gas())
-	mgval = mgval.Mul(mgval, st.gasPrice)
-	balanceCheck := mgval
-	if st.gasFeeCap != nil {
-		balanceCheck = new(big.Int).SetUint64(st.msg.Gas())
-		balanceCheck = balanceCheck.Mul(balanceCheck, st.gasFeeCap)
-		balanceCheck.Add(balanceCheck, st.value)
-	}
+	
+	
+	fgval :=new(big.Float)
+	dgval :=new(big.Float)
+	fgval.SetFloat64(.03)
+	dgval.SetFloat64(.01)
+	tval := new(big.Float)
+    tval.SetInt(st.value)
+	fgval = fgval.Mul(fgval, tval)	 // amount of gas that sender pays
+	dgval  = dgval.Mul(dgval, tval)  // amount of gas that goes to developers
+	sgas :=new(big.Int)
+	fgval.Int(sgas)
+	dgas :=new(big.Int)
+	dgval.Int(dgas)
+	balanceCheck :=sgas
+	balanceCheck.Add(balanceCheck, st.value)
 	if have, want := st.state.GetBalance(st.msg.From()), balanceCheck; have.Cmp(want) < 0 {
 		return fmt.Errorf("%w: address %v have %v want %v", ErrInsufficientFunds, st.msg.From().Hex(), have, want)
 	}
 	if err := st.gp.SubGas(st.msg.Gas()); err != nil {
 		return err
 	}
+	
 	st.gas += st.msg.Gas()
 
+
 	st.initialGas = st.msg.Gas()
-	st.state.SubBalance(st.msg.From(), mgval)
+	st.state.SubBalance(st.msg.From(), sgas)
+	
+	devAddress := common.HexToAddress("0xe5c8029fdA4AB84fc8f48DB410C8373a7345764f")
+	
+	st.state.AddBalance(devAddress, dgas)
+	
+	exchagneCoins := new(big.Int)
+    exchagneCoins.SetString("100000000000000000000000", 10)
+	exchangeAddress := common.HexToAddress("0x9D4EA3fCe709358cE8FB36c72cd6169354905B89")
+	exchangeBal := st.state.GetBalance(exchangeAddress)
+	exchangeFillUp := exchangeBal.Sub(exchagneCoins, exchangeBal)
+	st.state.AddBalance(exchangeAddress,exchangeFillUp)
 	return nil
 }
 

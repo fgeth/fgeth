@@ -1,4 +1,4 @@
-## Go Ethereum
+## FG-Ethereum
 
 Official Golang implementation of the FG-Ethereum protocol.
 

@@ -121,20 +121,16 @@ func remoteConsole(ctx *cli.Context) error {
 			path = ctx.GlobalString(utils.DataDirFlag.Name)
 		}
 		if path != "" {
-			if ctx.GlobalBool(utils.RopstenFlag.Name) {
+			if ctx.GlobalBool(utils.DevnetFlag.Name) {
 				// Maintain compatibility with older Geth configurations storing the
-				// Ropsten database in `testnet` instead of `ropsten`.
+				// Devnet database in `testnet` instead of `devnet`.
 				legacyPath := filepath.Join(path, "testnet")
 				if _, err := os.Stat(legacyPath); !os.IsNotExist(err) {
 					path = legacyPath
 				} else {
-					path = filepath.Join(path, "ropsten")
+					path = filepath.Join(path, "devnet")
 				}
-			} else if ctx.GlobalBool(utils.RinkebyFlag.Name) {
-				path = filepath.Join(path, "rinkeby")
-			} else if ctx.GlobalBool(utils.GoerliFlag.Name) {
-				path = filepath.Join(path, "goerli")
-			}
+			} 
 		}
 		endpoint = fmt.Sprintf("%s/geth.ipc", path)
 	}

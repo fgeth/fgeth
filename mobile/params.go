@@ -32,32 +32,15 @@ func MainnetGenesis() string {
 	return ""
 }
 
-// RopstenGenesis returns the JSON spec to use for the Ropsten test network.
-func RopstenGenesis() string {
-	enc, err := json.Marshal(core.DefaultRopstenGenesisBlock())
+// DevnetGenesis returns the JSON spec to use for the Devnet test network.
+func devnetGenesis() string {
+	enc, err := json.Marshal(core.DefaultDevnetGenesisBlock())
 	if err != nil {
 		panic(err)
 	}
 	return string(enc)
 }
 
-// RinkebyGenesis returns the JSON spec to use for the Rinkeby test network
-func RinkebyGenesis() string {
-	enc, err := json.Marshal(core.DefaultRinkebyGenesisBlock())
-	if err != nil {
-		panic(err)
-	}
-	return string(enc)
-}
-
-// GoerliGenesis returns the JSON spec to use for the Goerli test network
-func GoerliGenesis() string {
-	enc, err := json.Marshal(core.DefaultGoerliGenesisBlock())
-	if err != nil {
-		panic(err)
-	}
-	return string(enc)
-}
 
 // FoundationBootnodes returns the enode URLs of the P2P bootstrap nodes operated
 // by the foundation running the V5 discovery protocol.

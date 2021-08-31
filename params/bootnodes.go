@@ -26,7 +26,7 @@ var MainnetBootnodes = []string{
 	}
  
 var DevnetBootnodes = []string{
-	"enode://40fa3b4692231f009e78eb28c21d46f8b4d050cfe4d65145d44f5be6bcb0eaec9e4a7011739d2d98f329804ef292ba3c59f0a79ee30f5b13584d4e8414d1bf6e@99.106.34.130:30303",
+	"enode://40fa3b4692231f009e78eb28c21d46f8b4d050cfe4d65145d44f5be6bcb0eaec9e4a7011739d2d98f329804ef292ba3c59f0a79ee30f5b13584d4e8414d1bf6e@99.106.34.130:30182",
 }
 // RopstenBootnodes are the enode URLs of the P2P bootstrap nodes running on the
 // Ropsten test network.
@@ -91,12 +91,8 @@ func KnownDNSNetwork(genesis common.Hash, protocol string) string {
 	switch genesis {
 	case MainnetGenesisHash:
 		net = "mainnet"
-	case RopstenGenesisHash:
-		net = "ropsten"
-	case RinkebyGenesisHash:
-		net = "rinkeby"
-	case GoerliGenesisHash:
-		net = "goerli"
+	case DevnetGenesisHash:
+		net = "devnet"
 	default:
 		return ""
 	}

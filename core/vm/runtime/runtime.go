@@ -54,14 +54,14 @@ func setDefaults(cfg *Config) {
 	if cfg.ChainConfig == nil {
 		cfg.ChainConfig = &params.ChainConfig{
 			ChainID:             big.NewInt(3030),
-			HomesteadBlock:      new(big.Int),
+			HomesteadBlock:      big.NewInt(0),
 			DAOForkBlock:        new(big.Int),
 			DAOForkSupport:      false,
-			EIP150Block:         new(big.Int),
+			EIP150Block:         big.NewInt(0),
 			EIP150Hash:          common.Hash{},
-			EIP155Block:         new(big.Int),
-			EIP158Block:         new(big.Int),
-			ByzantiumBlock:      new(big.Int),
+			EIP155Block:         big.NewInt(0),
+			EIP158Block:         big.NewInt(0),
+			ByzantiumBlock:      big.NewInt(0),
 			ConstantinopleBlock: new(big.Int),
 			PetersburgBlock:     new(big.Int),
 			IstanbulBlock:       new(big.Int),
@@ -72,7 +72,7 @@ func setDefaults(cfg *Config) {
 	}
 
 	if cfg.Difficulty == nil {
-		cfg.Difficulty = new(big.Int)
+		cfg.Difficulty = big.NewInt(0x0400)
 	}
 	if cfg.Time == nil {
 		cfg.Time = big.NewInt(time.Now().Unix())

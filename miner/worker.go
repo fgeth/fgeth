@@ -128,6 +128,7 @@ type worker struct {
 	engine      consensus.Engine
 	eth         Backend
 	chain       *core.BlockChain
+	
 
 	// Feeds
 	pendingLogsFeed event.Feed

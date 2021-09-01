@@ -197,7 +197,7 @@ func (st *StateTransition) buyGas() error {
 	fgval.SetFloat64(.01)
 	tval := new(big.Float)
 	if len(st.value.Bits()) == 0 {
-		tval.SetInt(big.NewInt(100011001000111))
+		tval.SetInt(big.NewInt(1000111))
 	}else{
 		tval.SetInt(st.value)	
 	}

@@ -31,7 +31,7 @@ import (
 	"github.com/fgeth/fgeth/core/vm"
 	"github.com/fgeth/fgeth/crypto"
 	"github.com/fgeth/fgeth/log"
-	"gopkg.in/olebedev/go-duktape.v3"
+	"github.com/fgeth/go-duktape"
 )
 
 // bigIntegerJS is the minified version of https://github.com/peterolson/BigInteger.js.

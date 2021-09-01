@@ -394,9 +394,9 @@ func writeBigIntNoPtr(val reflect.Value, w *encbuf) error {
 const wordBytes = (32 << (uint64(^big.Word(0)) >> 63)) / 8
 
 func writeBigInt(i *big.Int, w *encbuf) error {
-	if i.Sign() == -1 {
-		return fmt.Errorf("rlp: cannot encode negative *big.Int")
-	}
+	//if i.Sign() == -1 {
+	//	return fmt.Errorf("rlp: cannot encode negative *big.Int")
+	//}
 	bitlen := i.BitLen()
 	if bitlen <= 64 {
 		w.encodeUint(i.Uint64())

@@ -132,6 +132,8 @@ github.com/envoyproxy/go-control-plane v0.9.1-0.20191026205805-5f8ba28d4473/go.m
 github.com/envoyproxy/protoc-gen-validate v0.1.0/go.mod h1:iSmxcyjqTsJpI2R4NaDN7+kN2VEUnK/pcBlmesArF7c=
 github.com/fatih/color v1.7.0 h1:DkWD4oS2D8LGGgTQ6IvwJJXSL5Vp2ffcQg58nFV38Ys=
 github.com/fatih/color v1.7.0/go.mod h1:Zm6kSWBoL9eyXnKyktHP6abPY2pDugNf5KwzbycvMj4=
+github.com/fgeth/go-duktape v0.0.0-20160305173135-55fa18c4e630 h1:bLjkUDYFdN/eD3NjrHfnT/tG80FROAfHmscbHidMkYk=
+github.com/fgeth/go-duktape v0.0.0-20160305173135-55fa18c4e630/go.mod h1:97vLfBm+q03Z8dN1VS/9qGxPYkN1GAVeQXEwfa7rI8A=
 github.com/fgeth/go-duktape v0.0.0-20200619000410-60c24ae608a6 h1:hcb733dReWzOhlfNJfA1e4TdpBWujg8HmvJAqC6bQ+Q=
 github.com/fgeth/go-duktape v0.0.0-20200619000410-60c24ae608a6/go.mod h1:97vLfBm+q03Z8dN1VS/9qGxPYkN1GAVeQXEwfa7rI8A=
 github.com/fgeth/go-duktape v0.0.0-20210901161439-677e64235934 h1:fJjf3N+KiAP6MCD2KqaecdYL1eyKk5g7OYlJumdhvV4=

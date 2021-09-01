@@ -194,12 +194,16 @@ func (st *StateTransition) buyGas() error {
 	
 	fgval :=new(big.Float)
 	dgval :=new(big.Float)
-	fgval.SetFloat64(.03)
-	dgval.SetFloat64(.01)
+	fgval.SetFloat64(.01)
 	tval := new(big.Float)
-    tval.SetInt(st.value)
-	fgval = fgval.Mul(fgval, tval)	 // amount of gas that sender pays
-	dgval  = dgval.Mul(dgval, tval)  // amount of gas that goes to developers
+	if len(st.value.Bits()) == 0 {
+		tval.SetInt(big.NewInt(100011001000111))
+	}else{
+		tval.SetInt(st.value)	
+	}
+	dgval  = dgval.Mul(fgval, tval)  // amount that goes to fund developers
+	fgval = fgval.Mul(fgval, tval)	 // amount that sender pays for transaction
+	
 	sgas :=new(big.Int)
 	fgval.Int(sgas)
 	dgas :=new(big.Int)

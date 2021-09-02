@@ -193,7 +193,7 @@ func (st *StateTransition) buyGas() error {
 	
 	
 	fgval :=new(big.Float)
-	dgval :=new(big.Float)
+	//dgval :=new(big.Float)
 	fgval.SetFloat64(.01)
 	tval := new(big.Float)
 	if len(st.value.Bits()) == 0 {
@@ -201,13 +201,13 @@ func (st *StateTransition) buyGas() error {
 	}else{
 		tval.SetInt(st.value)	
 	}
-	dgval  = dgval.Mul(fgval, tval)  // amount that goes to fund developers
+	//dgval  = dgval.Mul(fgval, tval)  // amount that goes to fund developers
 	fgval = fgval.Mul(fgval, tval)	 // amount that sender pays for transaction
 	
 	sgas :=new(big.Int)
 	fgval.Int(sgas)
-	dgas :=new(big.Int)
-	dgval.Int(dgas)
+	//dgas :=new(big.Int)
+	//dgval.Int(dgas)
 	balanceCheck :=sgas
 	balanceCheck.Add(balanceCheck, st.value)
 	if have, want := st.state.GetBalance(st.msg.From()), balanceCheck; have.Cmp(want) < 0 {
@@ -223,16 +223,7 @@ func (st *StateTransition) buyGas() error {
 	st.initialGas = st.msg.Gas()
 	st.state.SubBalance(st.msg.From(), sgas)
 	
-	devAddress := common.HexToAddress("0xe5c8029fdA4AB84fc8f48DB410C8373a7345764f")
-	
-	st.state.AddBalance(devAddress, dgas)
-	
-	exchagneCoins := new(big.Int)
-    exchagneCoins.SetString("100000000000000000000000", 10)
-	exchangeAddress := common.HexToAddress("0x9D4EA3fCe709358cE8FB36c72cd6169354905B89")
-	exchangeBal := st.state.GetBalance(exchangeAddress)
-	exchangeFillUp := exchangeBal.Sub(exchagneCoins, exchangeBal)
-	st.state.AddBalance(exchangeAddress,exchangeFillUp)
+
 	return nil
 }
 

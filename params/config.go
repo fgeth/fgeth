@@ -117,12 +117,12 @@ var (
 
 	// DevnetCheckpointOracle contains a set of configs for the Ropsten test network oracle.
 	DevnetCheckpointOracle = &CheckpointOracleConfig{
-		Address: common.HexToAddress("0xFfffa3F8Db2d7cFC974d91f6F59E3C41748Cea88"),
+		Address: common.HexToAddress("0xF730b815787349cF6aD306cCafeeF22aA98Eca73"),
 		Signers: []common.Address{
-			common.HexToAddress("0x519956852d7D826831EF853F2F00adB57513ca59"), // Jeff
-			common.HexToAddress("0x480C7Eab390A87c8872717BEe48d14D3B4c1Db03"), // TBD
-			common.HexToAddress("0x994d6403cBfdA74B34a668823d8611dda360655a"), // TBD
-			common.HexToAddress("0x533dbAEF28d9ac53673238eB4C2d8556278F33Ff"), // TBD
+			common.HexToAddress("0x6b49a43C4a1e966C3191Fe46b87810Bb43AD62Da"), // Jeff
+			common.HexToAddress("0x35adC96A8363191a5ED4D7A1394d5b7c086F6405"), // TBD
+			common.HexToAddress("0x63478e79c3e3Ac0ed6d8ef1f965DEC328636a1bb"), // TBD
+			common.HexToAddress("0x6B762F1Dbba10cFebEf853536a3f5325b1e6c255"), // TBD
 
 		},
 		Threshold: 2,

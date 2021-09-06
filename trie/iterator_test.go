@@ -23,10 +23,10 @@ import (
 	"math/rand"
 	"testing"
 
-	"github.com/fgeth/fgeth/common"
-	"github.com/fgeth/fgeth/crypto"
-	"github.com/fgeth/fgeth/ethdb"
-	"github.com/fgeth/fgeth/ethdb/memorydb"
+	"github.com/ethereum/go-ethereum/common"
+	"github.com/ethereum/go-ethereum/crypto"
+	"github.com/ethereum/go-ethereum/ethdb"
+	"github.com/ethereum/go-ethereum/ethdb/memorydb"
 )
 
 func TestIterator(t *testing.T) {
@@ -393,7 +393,7 @@ func testIteratorContinueAfterSeekError(t *testing.T, memonly bool) {
 	for _, val := range testdata1 {
 		ctr.Update([]byte(val.k), []byte(val.v))
 	}
-	root, _, _ := ctr.Commit(nil)
+	root, _ := ctr.Commit(nil)
 	if !memonly {
 		triedb.Commit(root, true, nil)
 	}

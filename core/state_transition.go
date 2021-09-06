@@ -21,12 +21,12 @@ import (
 	"math"
 	"math/big"
 
-	"github.com/fgeth/fgeth/common"
-	cmath "github.com/fgeth/fgeth/common/math"
-	"github.com/fgeth/fgeth/core/types"
-	"github.com/fgeth/fgeth/core/vm"
-	"github.com/fgeth/fgeth/crypto"
-	"github.com/fgeth/fgeth/params"
+	"github.com/ethereum/go-ethereum/common"
+	cmath "github.com/ethereum/go-ethereum/common/math"
+	"github.com/ethereum/go-ethereum/core/types"
+	"github.com/ethereum/go-ethereum/core/vm"
+	"github.com/ethereum/go-ethereum/crypto"
+	"github.com/ethereum/go-ethereum/params"
 )
 
 var emptyCodeHash = crypto.Keccak256Hash(nil)
@@ -190,40 +190,24 @@ func (st *StateTransition) to() common.Address {
 }
 
 func (st *StateTransition) buyGas() error {
-	
-	
-	fgval :=new(big.Float)
-	//dgval :=new(big.Float)
-	fgval.SetFloat64(.01)
-	tval := new(big.Float)
-	if len(st.value.Bits()) == 0 {
-		tval.SetInt(big.NewInt(1000111))
-	}else{
-		tval.SetInt(st.value)	
+	mgval := new(big.Int).SetUint64(st.msg.Gas())
+	mgval = mgval.Mul(mgval, st.gasPrice)
+	balanceCheck := mgval
+	if st.gasFeeCap != nil {
+		balanceCheck = new(big.Int).SetUint64(st.msg.Gas())
+		balanceCheck = balanceCheck.Mul(balanceCheck, st.gasFeeCap)
+		balanceCheck.Add(balanceCheck, st.value)
 	}
-	//dgval  = dgval.Mul(fgval, tval)  // amount that goes to fund developers
-	fgval = fgval.Mul(fgval, tval)	 // amount that sender pays for transaction
-	
-	sgas :=new(big.Int)
-	fgval.Int(sgas)
-	//dgas :=new(big.Int)
-	//dgval.Int(dgas)
-	balanceCheck :=sgas
-	balanceCheck.Add(balanceCheck, st.value)
 	if have, want := st.state.GetBalance(st.msg.From()), balanceCheck; have.Cmp(want) < 0 {
 		return fmt.Errorf("%w: address %v have %v want %v", ErrInsufficientFunds, st.msg.From().Hex(), have, want)
 	}
 	if err := st.gp.SubGas(st.msg.Gas()); err != nil {
 		return err
 	}
-	
 	st.gas += st.msg.Gas()
 
-
 	st.initialGas = st.msg.Gas()
-	st.state.SubBalance(st.msg.From(), sgas)
-	
-
+	st.state.SubBalance(st.msg.From(), mgval)
 	return nil
 }
 

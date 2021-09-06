@@ -31,11 +31,11 @@ import (
 	"testing"
 	"time"
 
-	"github.com/fgeth/fgeth/internal/testlog"
-	"github.com/fgeth/fgeth/log"
-	"github.com/fgeth/fgeth/p2p/discover/v4wire"
-	"github.com/fgeth/fgeth/p2p/enode"
-	"github.com/fgeth/fgeth/p2p/enr"
+	"github.com/ethereum/go-ethereum/internal/testlog"
+	"github.com/ethereum/go-ethereum/log"
+	"github.com/ethereum/go-ethereum/p2p/discover/v4wire"
+	"github.com/ethereum/go-ethereum/p2p/enode"
+	"github.com/ethereum/go-ethereum/p2p/enr"
 )
 
 // shared test variables

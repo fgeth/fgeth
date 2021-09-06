@@ -21,17 +21,17 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/fgeth/fgeth/common"
-	"github.com/fgeth/fgeth/core"
-	"github.com/fgeth/fgeth/core/state"
-	"github.com/fgeth/fgeth/light"
-	"github.com/fgeth/fgeth/log"
-	"github.com/fgeth/fgeth/metrics"
-	"github.com/fgeth/fgeth/p2p"
-	"github.com/fgeth/fgeth/p2p/enode"
-	"github.com/fgeth/fgeth/p2p/enr"
-	"github.com/fgeth/fgeth/rlp"
-	"github.com/fgeth/fgeth/trie"
+	"github.com/ethereum/go-ethereum/common"
+	"github.com/ethereum/go-ethereum/core"
+	"github.com/ethereum/go-ethereum/core/state"
+	"github.com/ethereum/go-ethereum/light"
+	"github.com/ethereum/go-ethereum/log"
+	"github.com/ethereum/go-ethereum/metrics"
+	"github.com/ethereum/go-ethereum/p2p"
+	"github.com/ethereum/go-ethereum/p2p/enode"
+	"github.com/ethereum/go-ethereum/p2p/enr"
+	"github.com/ethereum/go-ethereum/rlp"
+	"github.com/ethereum/go-ethereum/trie"
 )
 
 const (

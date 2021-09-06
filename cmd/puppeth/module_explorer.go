@@ -25,7 +25,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/fgeth/fgeth/log"
+	"github.com/ethereum/go-ethereum/log"
 )
 
 // explorerDockerfile is the Dockerfile required to run a block explorer.
@@ -65,7 +65,7 @@ services:
             - VIRTUAL_HOST={{.VHost}}
             - VIRTUAL_PORT=4000{{end}}
         volumes:
-            - {{.Datadir}}:/opt/app/.fgethereum
+            - {{.Datadir}}:/opt/app/.ethereum
             - {{.DBDir}}:/var/lib/postgresql/data
         logging:
           driver: "json-file"
@@ -182,7 +182,7 @@ func checkExplorer(client *sshClient, network string) (*explorerInfos, error) {
 	// Assemble and return the useful infos
 	stats := &explorerInfos{
 		node: &nodeInfos{
-			datadir:  infos.volumes["/opt/app/.fgethereum"],
+			datadir:  infos.volumes["/opt/app/.ethereum"],
 			port:     infos.portmap[infos.envvars["ETH_PORT"]+"/tcp"],
 			ethstats: infos.envvars["ETH_NAME"],
 		},

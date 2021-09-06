@@ -21,10 +21,10 @@ import (
 	"testing"
 	"time"
 
-	"github.com/fgeth/fgeth/common/mclock"
-	"github.com/fgeth/fgeth/core/rawdb"
-	"github.com/fgeth/fgeth/les/utils"
-	"github.com/fgeth/fgeth/p2p/enode"
+	"github.com/ethereum/go-ethereum/common/mclock"
+	"github.com/ethereum/go-ethereum/core/rawdb"
+	"github.com/ethereum/go-ethereum/les/utils"
+	"github.com/ethereum/go-ethereum/p2p/enode"
 )
 
 func expval(v uint64) utils.ExpiredValue {

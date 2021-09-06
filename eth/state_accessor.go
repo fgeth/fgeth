@@ -21,13 +21,13 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/fgeth/fgeth/common"
-	"github.com/fgeth/fgeth/core"
-	"github.com/fgeth/fgeth/core/state"
-	"github.com/fgeth/fgeth/core/types"
-	"github.com/fgeth/fgeth/core/vm"
-	"github.com/fgeth/fgeth/log"
-	"github.com/fgeth/fgeth/trie"
+	"github.com/ethereum/go-ethereum/common"
+	"github.com/ethereum/go-ethereum/core"
+	"github.com/ethereum/go-ethereum/core/state"
+	"github.com/ethereum/go-ethereum/core/types"
+	"github.com/ethereum/go-ethereum/core/vm"
+	"github.com/ethereum/go-ethereum/log"
+	"github.com/ethereum/go-ethereum/trie"
 )
 
 // stateAtBlock retrieves the state database associated with a certain block.

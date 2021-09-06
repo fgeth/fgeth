@@ -33,39 +33,39 @@ import (
 	"text/template"
 	"time"
 
-	"github.com/fgeth/fgeth/accounts"
-	"github.com/fgeth/fgeth/accounts/keystore"
-	"github.com/fgeth/fgeth/common"
-	"github.com/fgeth/fgeth/common/fdlimit"
-	"github.com/fgeth/fgeth/consensus"
-	"github.com/fgeth/fgeth/consensus/clique"
-	"github.com/fgeth/fgeth/consensus/ethash"
-	"github.com/fgeth/fgeth/core"
-	"github.com/fgeth/fgeth/core/rawdb"
-	"github.com/fgeth/fgeth/core/vm"
-	"github.com/fgeth/fgeth/crypto"
-	"github.com/fgeth/fgeth/eth"
-	"github.com/fgeth/fgeth/eth/downloader"
-	"github.com/fgeth/fgeth/eth/ethconfig"
-	"github.com/fgeth/fgeth/eth/gasprice"
-	"github.com/fgeth/fgeth/eth/tracers"
-	"github.com/fgeth/fgeth/ethdb"
-	"github.com/fgeth/fgeth/ethstats"
-	"github.com/fgeth/fgeth/graphql"
-	"github.com/fgeth/fgeth/internal/ethapi"
-	"github.com/fgeth/fgeth/internal/flags"
-	"github.com/fgeth/fgeth/les"
-	"github.com/fgeth/fgeth/log"
-	"github.com/fgeth/fgeth/metrics"
-	"github.com/fgeth/fgeth/metrics/exp"
-	"github.com/fgeth/fgeth/metrics/influxdb"
-	"github.com/fgeth/fgeth/miner"
-	"github.com/fgeth/fgeth/node"
-	"github.com/fgeth/fgeth/p2p"
-	"github.com/fgeth/fgeth/p2p/enode"
-	"github.com/fgeth/fgeth/p2p/nat"
-	"github.com/fgeth/fgeth/p2p/netutil"
-	"github.com/fgeth/fgeth/params"
+	"github.com/ethereum/go-ethereum/accounts"
+	"github.com/ethereum/go-ethereum/accounts/keystore"
+	"github.com/ethereum/go-ethereum/common"
+	"github.com/ethereum/go-ethereum/common/fdlimit"
+	"github.com/ethereum/go-ethereum/consensus"
+	"github.com/ethereum/go-ethereum/consensus/clique"
+	"github.com/ethereum/go-ethereum/consensus/ethash"
+	"github.com/ethereum/go-ethereum/core"
+	"github.com/ethereum/go-ethereum/core/rawdb"
+	"github.com/ethereum/go-ethereum/core/vm"
+	"github.com/ethereum/go-ethereum/crypto"
+	"github.com/ethereum/go-ethereum/eth"
+	"github.com/ethereum/go-ethereum/eth/downloader"
+	"github.com/ethereum/go-ethereum/eth/ethconfig"
+	"github.com/ethereum/go-ethereum/eth/gasprice"
+	"github.com/ethereum/go-ethereum/eth/tracers"
+	"github.com/ethereum/go-ethereum/ethdb"
+	"github.com/ethereum/go-ethereum/ethstats"
+	"github.com/ethereum/go-ethereum/graphql"
+	"github.com/ethereum/go-ethereum/internal/ethapi"
+	"github.com/ethereum/go-ethereum/internal/flags"
+	"github.com/ethereum/go-ethereum/les"
+	"github.com/ethereum/go-ethereum/log"
+	"github.com/ethereum/go-ethereum/metrics"
+	"github.com/ethereum/go-ethereum/metrics/exp"
+	"github.com/ethereum/go-ethereum/metrics/influxdb"
+	"github.com/ethereum/go-ethereum/miner"
+	"github.com/ethereum/go-ethereum/node"
+	"github.com/ethereum/go-ethereum/p2p"
+	"github.com/ethereum/go-ethereum/p2p/enode"
+	"github.com/ethereum/go-ethereum/p2p/nat"
+	"github.com/ethereum/go-ethereum/p2p/netutil"
+	"github.com/ethereum/go-ethereum/params"
 	pcsclite "github.com/gballet/go-libpcsclite"
 	gopsutil "github.com/shirou/gopsutil/mem"
 	"gopkg.in/urfave/cli.v1"
@@ -136,16 +136,24 @@ var (
 	}
 	NetworkIdFlag = cli.Uint64Flag{
 		Name:  "networkid",
-		Usage: "Explicitly set network id (integer)(For test networks: use --devnet instead)",
+		Usage: "Explicitly set network id (integer)(For testnets: use --ropsten, --rinkeby, --goerli instead)",
 		Value: ethconfig.Defaults.NetworkId,
 	}
 	MainnetFlag = cli.BoolFlag{
 		Name:  "mainnet",
-		Usage: "FG-Ethereum mainnet",
+		Usage: "Ethereum mainnet",
 	}
-	DevnetFlag = cli.BoolFlag{
-		Name:  "devnet",
-		Usage: "FG-Ethereum Devnet",
+	GoerliFlag = cli.BoolFlag{
+		Name:  "goerli",
+		Usage: "Görli network: pre-configured proof-of-authority test network",
+	}
+	RinkebyFlag = cli.BoolFlag{
+		Name:  "rinkeby",
+		Usage: "Rinkeby network: pre-configured proof-of-authority test network",
+	}
+	RopstenFlag = cli.BoolFlag{
+		Name:  "ropsten",
+		Usage: "Ropsten network: pre-configured proof-of-work test network",
 	}
 	DeveloperFlag = cli.BoolFlag{
 		Name:  "dev",
@@ -452,7 +460,7 @@ var (
 		Usage: "Time interval to recreate the block being mined",
 		Value: ethconfig.Defaults.Miner.Recommit,
 	}
-	MinerNoVerifyFlag = cli.BoolFlag{
+	MinerNoVerfiyFlag = cli.BoolFlag{
 		Name:  "miner.noverify",
 		Usage: "Disable remote sealing verification",
 	}
@@ -774,10 +782,16 @@ var (
 // then a subdirectory of the specified datadir will be used.
 func MakeDataDir(ctx *cli.Context) string {
 	if path := ctx.GlobalString(DataDirFlag.Name); path != "" {
-		if ctx.GlobalBool(DevnetFlag.Name) {
+		if ctx.GlobalBool(RopstenFlag.Name) {
 			// Maintain compatibility with older Geth configurations storing the
-			// Devnet database in `testnet` instead of `devnet`.
-			return filepath.Join(path, "devnet")
+			// Ropsten database in `testnet` instead of `ropsten`.
+			return filepath.Join(path, "ropsten")
+		}
+		if ctx.GlobalBool(RinkebyFlag.Name) {
+			return filepath.Join(path, "rinkeby")
+		}
+		if ctx.GlobalBool(GoerliFlag.Name) {
+			return filepath.Join(path, "goerli")
 		}
 		return path
 	}
@@ -825,8 +839,12 @@ func setBootstrapNodes(ctx *cli.Context, cfg *p2p.Config) {
 	switch {
 	case ctx.GlobalIsSet(BootnodesFlag.Name):
 		urls = SplitAndTrim(ctx.GlobalString(BootnodesFlag.Name))
-	case ctx.GlobalBool(DevnetFlag.Name):
-		urls = params.DevnetBootnodes
+	case ctx.GlobalBool(RopstenFlag.Name):
+		urls = params.RopstenBootnodes
+	case ctx.GlobalBool(RinkebyFlag.Name):
+		urls = params.RinkebyBootnodes
+	case ctx.GlobalBool(GoerliFlag.Name):
+		urls = params.GoerliBootnodes
 	case cfg.BootstrapNodes != nil:
 		return // already set, don't apply defaults.
 	}
@@ -1254,11 +1272,23 @@ func setDataDir(ctx *cli.Context, cfg *node.Config) {
 		cfg.DataDir = ctx.GlobalString(DataDirFlag.Name)
 	case ctx.GlobalBool(DeveloperFlag.Name):
 		cfg.DataDir = "" // unless explicitly requested, use memory databases
-	case ctx.GlobalBool(DevnetFlag.Name) && cfg.DataDir == node.DefaultDataDir():
-		cfg.DataDir = filepath.Join(node.DefaultDataDir(), "devnet")
-		
-	}
+	case ctx.GlobalBool(RopstenFlag.Name) && cfg.DataDir == node.DefaultDataDir():
+		// Maintain compatibility with older Geth configurations storing the
+		// Ropsten database in `testnet` instead of `ropsten`.
+		legacyPath := filepath.Join(node.DefaultDataDir(), "testnet")
+		if _, err := os.Stat(legacyPath); !os.IsNotExist(err) {
+			log.Warn("Using the deprecated `testnet` datadir. Future versions will store the Ropsten chain in `ropsten`.")
+			cfg.DataDir = legacyPath
+		} else {
+			cfg.DataDir = filepath.Join(node.DefaultDataDir(), "ropsten")
+		}
 
+		cfg.DataDir = filepath.Join(node.DefaultDataDir(), "ropsten")
+	case ctx.GlobalBool(RinkebyFlag.Name) && cfg.DataDir == node.DefaultDataDir():
+		cfg.DataDir = filepath.Join(node.DefaultDataDir(), "rinkeby")
+	case ctx.GlobalBool(GoerliFlag.Name) && cfg.DataDir == node.DefaultDataDir():
+		cfg.DataDir = filepath.Join(node.DefaultDataDir(), "goerli")
+	}
 }
 
 func setGPO(ctx *cli.Context, cfg *gasprice.Config, light bool) {
@@ -1368,8 +1398,8 @@ func setMiner(ctx *cli.Context, cfg *miner.Config) {
 	if ctx.GlobalIsSet(MinerRecommitIntervalFlag.Name) {
 		cfg.Recommit = ctx.GlobalDuration(MinerRecommitIntervalFlag.Name)
 	}
-	if ctx.GlobalIsSet(MinerNoVerifyFlag.Name) {
-		cfg.Noverify = ctx.GlobalBool(MinerNoVerifyFlag.Name)
+	if ctx.GlobalIsSet(MinerNoVerfiyFlag.Name) {
+		cfg.Noverify = ctx.GlobalBool(MinerNoVerfiyFlag.Name)
 	}
 	if ctx.GlobalIsSet(LegacyMinerGasTargetFlag.Name) {
 		log.Warn("The generic --miner.gastarget flag is deprecated and will be removed in the future!")
@@ -1443,7 +1473,7 @@ func CheckExclusive(ctx *cli.Context, args ...interface{}) {
 // SetEthConfig applies eth-related command line flags to the config.
 func SetEthConfig(ctx *cli.Context, stack *node.Node, cfg *ethconfig.Config) {
 	// Avoid conflicting network flags
-	CheckExclusive(ctx, MainnetFlag, DeveloperFlag, DevnetFlag)
+	CheckExclusive(ctx, MainnetFlag, DeveloperFlag, RopstenFlag, RinkebyFlag, GoerliFlag)
 	CheckExclusive(ctx, LightServeFlag, SyncModeFlag, "light")
 	CheckExclusive(ctx, DeveloperFlag, ExternalSignerFlag) // Can't use both ephemeral unlocked and external signer
 	if ctx.GlobalString(GCModeFlag.Name) == "archive" && ctx.GlobalUint64(TxLookupLimitFlag.Name) != 0 {
@@ -1574,16 +1604,28 @@ func SetEthConfig(ctx *cli.Context, stack *node.Node, cfg *ethconfig.Config) {
 	switch {
 	case ctx.GlobalBool(MainnetFlag.Name):
 		if !ctx.GlobalIsSet(NetworkIdFlag.Name) {
-			cfg.NetworkId = 3030
+			cfg.NetworkId = 1
 		}
 		cfg.Genesis = core.DefaultGenesisBlock()
 		SetDNSDiscoveryDefaults(cfg, params.MainnetGenesisHash)
-	case ctx.GlobalBool(DevnetFlag.Name):
+	case ctx.GlobalBool(RopstenFlag.Name):
 		if !ctx.GlobalIsSet(NetworkIdFlag.Name) {
-			cfg.NetworkId = 182
+			cfg.NetworkId = 3
 		}
-		cfg.Genesis = core.DefaultDevnetGenesisBlock()
-		SetDNSDiscoveryDefaults(cfg, params.DevnetGenesisHash)
+		cfg.Genesis = core.DefaultRopstenGenesisBlock()
+		SetDNSDiscoveryDefaults(cfg, params.RopstenGenesisHash)
+	case ctx.GlobalBool(RinkebyFlag.Name):
+		if !ctx.GlobalIsSet(NetworkIdFlag.Name) {
+			cfg.NetworkId = 4
+		}
+		cfg.Genesis = core.DefaultRinkebyGenesisBlock()
+		SetDNSDiscoveryDefaults(cfg, params.RinkebyGenesisHash)
+	case ctx.GlobalBool(GoerliFlag.Name):
+		if !ctx.GlobalIsSet(NetworkIdFlag.Name) {
+			cfg.NetworkId = 5
+		}
+		cfg.Genesis = core.DefaultGoerliGenesisBlock()
+		SetDNSDiscoveryDefaults(cfg, params.GoerliGenesisHash)
 	case ctx.GlobalBool(DeveloperFlag.Name):
 		if !ctx.GlobalIsSet(NetworkIdFlag.Name) {
 			cfg.NetworkId = 1337
@@ -1798,8 +1840,12 @@ func MakeGenesis(ctx *cli.Context) *core.Genesis {
 	switch {
 	case ctx.GlobalBool(MainnetFlag.Name):
 		genesis = core.DefaultGenesisBlock()
-	case ctx.GlobalBool(DevnetFlag.Name):
-		genesis = core.DefaultDevnetGenesisBlock()
+	case ctx.GlobalBool(RopstenFlag.Name):
+		genesis = core.DefaultRopstenGenesisBlock()
+	case ctx.GlobalBool(RinkebyFlag.Name):
+		genesis = core.DefaultRinkebyGenesisBlock()
+	case ctx.GlobalBool(GoerliFlag.Name):
+		genesis = core.DefaultGoerliGenesisBlock()
 	case ctx.GlobalBool(DeveloperFlag.Name):
 		Fatalf("Developer chains are ephemeral")
 	}

@@ -23,11 +23,11 @@ import (
 	"testing"
 	"time"
 
-	"github.com/fgeth/fgeth/common/mclock"
-	"github.com/fgeth/fgeth/ethdb"
-	"github.com/fgeth/fgeth/ethdb/memorydb"
-	"github.com/fgeth/fgeth/p2p/enode"
-	"github.com/fgeth/fgeth/p2p/enr"
+	"github.com/ethereum/go-ethereum/common/mclock"
+	"github.com/ethereum/go-ethereum/ethdb"
+	"github.com/ethereum/go-ethereum/ethdb/memorydb"
+	"github.com/ethereum/go-ethereum/p2p/enode"
+	"github.com/ethereum/go-ethereum/p2p/enr"
 )
 
 const (

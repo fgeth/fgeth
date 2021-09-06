@@ -21,17 +21,17 @@ import (
 	"testing"
 	"time"
 
-	"github.com/fgeth/fgeth/common"
-	"github.com/fgeth/fgeth/consensus/clique"
-	"github.com/fgeth/fgeth/core"
-	"github.com/fgeth/fgeth/core/rawdb"
-	"github.com/fgeth/fgeth/core/state"
-	"github.com/fgeth/fgeth/core/types"
-	"github.com/fgeth/fgeth/core/vm"
-	"github.com/fgeth/fgeth/eth/downloader"
-	"github.com/fgeth/fgeth/ethdb/memorydb"
-	"github.com/fgeth/fgeth/event"
-	"github.com/fgeth/fgeth/trie"
+	"github.com/ethereum/go-ethereum/common"
+	"github.com/ethereum/go-ethereum/consensus/clique"
+	"github.com/ethereum/go-ethereum/core"
+	"github.com/ethereum/go-ethereum/core/rawdb"
+	"github.com/ethereum/go-ethereum/core/state"
+	"github.com/ethereum/go-ethereum/core/types"
+	"github.com/ethereum/go-ethereum/core/vm"
+	"github.com/ethereum/go-ethereum/eth/downloader"
+	"github.com/ethereum/go-ethereum/ethdb/memorydb"
+	"github.com/ethereum/go-ethereum/event"
+	"github.com/ethereum/go-ethereum/trie"
 )
 
 type mockBackend struct {

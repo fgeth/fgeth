@@ -23,10 +23,10 @@ import (
 	"testing"
 	"time"
 
-	"github.com/fgeth/fgeth/common"
-	"github.com/fgeth/fgeth/core/state"
-	"github.com/fgeth/fgeth/core/vm"
-	"github.com/fgeth/fgeth/params"
+	"github.com/ethereum/go-ethereum/common"
+	"github.com/ethereum/go-ethereum/core/state"
+	"github.com/ethereum/go-ethereum/core/vm"
+	"github.com/ethereum/go-ethereum/params"
 )
 
 type account struct{}

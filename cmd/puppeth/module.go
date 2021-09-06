@@ -25,7 +25,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/fgeth/fgeth/log"
+	"github.com/ethereum/go-ethereum/log"
 )
 
 var (

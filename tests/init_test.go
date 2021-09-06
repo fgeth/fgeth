@@ -30,7 +30,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/fgeth/fgeth/params"
+	"github.com/ethereum/go-ethereum/params"
 )
 
 var (

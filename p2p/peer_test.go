@@ -28,9 +28,9 @@ import (
 	"testing"
 	"time"
 
-	"github.com/fgeth/fgeth/log"
-	"github.com/fgeth/fgeth/p2p/enode"
-	"github.com/fgeth/fgeth/p2p/enr"
+	"github.com/ethereum/go-ethereum/log"
+	"github.com/ethereum/go-ethereum/p2p/enode"
+	"github.com/ethereum/go-ethereum/p2p/enr"
 )
 
 var discard = Protocol{

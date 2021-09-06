@@ -28,16 +28,16 @@ import (
 	"strings"
 	"time"
 
-	"github.com/fgeth/fgeth/common"
-	"github.com/fgeth/fgeth/common/hexutil"
-	"github.com/fgeth/fgeth/core"
-	"github.com/fgeth/fgeth/core/rawdb"
-	"github.com/fgeth/fgeth/core/state"
-	"github.com/fgeth/fgeth/core/types"
-	"github.com/fgeth/fgeth/internal/ethapi"
-	"github.com/fgeth/fgeth/rlp"
-	"github.com/fgeth/fgeth/rpc"
-	"github.com/fgeth/fgeth/trie"
+	"github.com/ethereum/go-ethereum/common"
+	"github.com/ethereum/go-ethereum/common/hexutil"
+	"github.com/ethereum/go-ethereum/core"
+	"github.com/ethereum/go-ethereum/core/rawdb"
+	"github.com/ethereum/go-ethereum/core/state"
+	"github.com/ethereum/go-ethereum/core/types"
+	"github.com/ethereum/go-ethereum/internal/ethapi"
+	"github.com/ethereum/go-ethereum/rlp"
+	"github.com/ethereum/go-ethereum/rpc"
+	"github.com/ethereum/go-ethereum/trie"
 )
 
 // PublicEthereumAPI provides an API to access Ethereum full node-related
@@ -342,7 +342,7 @@ func (api *PrivateDebugAPI) GetBadBlocks(ctx context.Context) ([]*BadBlockArgs, 
 		} else {
 			blockRlp = fmt.Sprintf("0x%x", rlpBytes)
 		}
-		if blockJSON, err = ethapi.RPCMarshalBlock(block, true, true); err != nil {
+		if blockJSON, err = ethapi.RPCMarshalBlock(block, true, true, api.eth.engine); err != nil {
 			blockJSON = map[string]interface{}{"error": err.Error()}
 		}
 		results = append(results, &BadBlockArgs{

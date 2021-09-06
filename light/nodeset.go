@@ -20,10 +20,10 @@ import (
 	"errors"
 	"sync"
 
-	"github.com/fgeth/fgeth/common"
-	"github.com/fgeth/fgeth/crypto"
-	"github.com/fgeth/fgeth/ethdb"
-	"github.com/fgeth/fgeth/rlp"
+	"github.com/ethereum/go-ethereum/common"
+	"github.com/ethereum/go-ethereum/crypto"
+	"github.com/ethereum/go-ethereum/ethdb"
+	"github.com/ethereum/go-ethereum/rlp"
 )
 
 // NodeSet stores a set of trie nodes. It implements trie.Database and can also

@@ -27,17 +27,17 @@ import (
 	"path"
 	"strings"
 
-	"github.com/fgeth/fgeth/common"
-	"github.com/fgeth/fgeth/common/hexutil"
-	"github.com/fgeth/fgeth/core"
-	"github.com/fgeth/fgeth/core/state"
-	"github.com/fgeth/fgeth/core/types"
-	"github.com/fgeth/fgeth/core/vm"
-	"github.com/fgeth/fgeth/crypto"
-	"github.com/fgeth/fgeth/log"
-	"github.com/fgeth/fgeth/params"
-	"github.com/fgeth/fgeth/rlp"
-	"github.com/fgeth/fgeth/tests"
+	"github.com/ethereum/go-ethereum/common"
+	"github.com/ethereum/go-ethereum/common/hexutil"
+	"github.com/ethereum/go-ethereum/core"
+	"github.com/ethereum/go-ethereum/core/state"
+	"github.com/ethereum/go-ethereum/core/types"
+	"github.com/ethereum/go-ethereum/core/vm"
+	"github.com/ethereum/go-ethereum/crypto"
+	"github.com/ethereum/go-ethereum/log"
+	"github.com/ethereum/go-ethereum/params"
+	"github.com/ethereum/go-ethereum/rlp"
+	"github.com/ethereum/go-ethereum/tests"
 	"gopkg.in/urfave/cli.v1"
 )
 
@@ -251,20 +251,6 @@ func Main(ctx *cli.Context) error {
 		if prestate.Env.BaseFee == nil {
 			return NewError(ErrorVMConfig, errors.New("EIP-1559 config but missing 'currentBaseFee' in env section"))
 		}
-	}
-	if env := prestate.Env; env.Difficulty == nil {
-		// If difficulty was not provided by caller, we need to calculate it.
-		switch {
-		case env.ParentDifficulty == nil:
-			return NewError(ErrorVMConfig, errors.New("currentDifficulty was not provided, and cannot be calculated due to missing parentDifficulty"))
-		case env.Number == 0:
-			return NewError(ErrorVMConfig, errors.New("currentDifficulty needs to be provided for block number 0"))
-		case env.Timestamp <= env.ParentTimestamp:
-			return NewError(ErrorVMConfig, fmt.Errorf("currentDifficulty cannot be calculated -- currentTime (%d) needs to be after parent time (%d)",
-				env.Timestamp, env.ParentTimestamp))
-		}
-		prestate.Env.Difficulty = calcDifficulty(chainConfig, env.Number, env.Timestamp,
-			env.ParentTimestamp, env.ParentDifficulty, env.ParentUncleHash)
 	}
 	// Run the test and aggregate the result
 	s, result, err := prestate.Apply(vmConfig, chainConfig, txs, ctx.Int64(RewardFlag.Name), getTracer)

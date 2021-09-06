@@ -21,13 +21,14 @@ import (
 	"testing"
 	"time"
 
-	"github.com/fgeth/fgeth/eth/downloader"
-	"github.com/fgeth/fgeth/eth/protocols/eth"
-	"github.com/fgeth/fgeth/p2p"
-	"github.com/fgeth/fgeth/p2p/enode"
+	"github.com/ethereum/go-ethereum/eth/downloader"
+	"github.com/ethereum/go-ethereum/eth/protocols/eth"
+	"github.com/ethereum/go-ethereum/p2p"
+	"github.com/ethereum/go-ethereum/p2p/enode"
 )
 
 // Tests that fast sync is disabled after a successful sync cycle.
+func TestFastSyncDisabling65(t *testing.T) { testFastSyncDisabling(t, eth.ETH65) }
 func TestFastSyncDisabling66(t *testing.T) { testFastSyncDisabling(t, eth.ETH66) }
 
 // Tests that fast sync gets disabled as soon as a real block is successfully

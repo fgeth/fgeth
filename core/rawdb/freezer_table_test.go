@@ -28,7 +28,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/fgeth/fgeth/metrics"
+	"github.com/ethereum/go-ethereum/metrics"
 )
 
 func init() {

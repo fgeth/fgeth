@@ -27,10 +27,10 @@ import (
 	"sync"
 	"time"
 
-	"github.com/fgeth/fgeth/common/mclock"
-	"github.com/fgeth/fgeth/log"
-	"github.com/fgeth/fgeth/p2p/enode"
-	"github.com/fgeth/fgeth/p2p/netutil"
+	"github.com/ethereum/go-ethereum/common/mclock"
+	"github.com/ethereum/go-ethereum/log"
+	"github.com/ethereum/go-ethereum/p2p/enode"
+	"github.com/ethereum/go-ethereum/p2p/netutil"
 )
 
 const (
@@ -107,7 +107,7 @@ type dialScheduler struct {
 	// Everything below here belongs to loop and
 	// should only be accessed by code on the loop goroutine.
 	dialing   map[enode.ID]*dialTask // active tasks
-	peers     map[enode.ID]struct{}  // all connected peers
+	peers     map[enode.ID]connFlag  // all connected peers
 	dialPeers int                    // current number of dialed peers
 
 	// The static map tracks all static dial tasks. The subset of usable static dial tasks
@@ -166,7 +166,7 @@ func newDialScheduler(config dialConfig, it enode.Iterator, setupFunc dialSetupF
 		setupFunc:   setupFunc,
 		dialing:     make(map[enode.ID]*dialTask),
 		static:      make(map[enode.ID]*dialTask),
-		peers:       make(map[enode.ID]struct{}),
+		peers:       make(map[enode.ID]connFlag),
 		doneCh:      make(chan *dialTask),
 		nodesIn:     make(chan *enode.Node),
 		addStaticCh: make(chan *enode.Node),
@@ -259,7 +259,7 @@ loop:
 				d.dialPeers++
 			}
 			id := c.node.ID()
-			d.peers[id] = struct{}{}
+			d.peers[id] = c.flags
 			// Remove from static pool because the node is now connected.
 			task := d.static[id]
 			if task != nil && task.staticPoolIndex >= 0 {

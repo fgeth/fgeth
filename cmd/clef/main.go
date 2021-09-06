@@ -35,25 +35,25 @@ import (
 	"strings"
 	"time"
 
-	"github.com/fgeth/fgeth/accounts"
-	"github.com/fgeth/fgeth/accounts/keystore"
-	"github.com/fgeth/fgeth/cmd/utils"
-	"github.com/fgeth/fgeth/common"
-	"github.com/fgeth/fgeth/common/hexutil"
-	"github.com/fgeth/fgeth/core/types"
-	"github.com/fgeth/fgeth/crypto"
-	"github.com/fgeth/fgeth/internal/ethapi"
-	"github.com/fgeth/fgeth/internal/flags"
-	"github.com/fgeth/fgeth/log"
-	"github.com/fgeth/fgeth/node"
-	"github.com/fgeth/fgeth/params"
-	"github.com/fgeth/fgeth/rlp"
-	"github.com/fgeth/fgeth/rpc"
-	"github.com/fgeth/fgeth/signer/core"
-	"github.com/fgeth/fgeth/signer/core/apitypes"
-	"github.com/fgeth/fgeth/signer/fourbyte"
-	"github.com/fgeth/fgeth/signer/rules"
-	"github.com/fgeth/fgeth/signer/storage"
+	"github.com/ethereum/go-ethereum/accounts"
+	"github.com/ethereum/go-ethereum/accounts/keystore"
+	"github.com/ethereum/go-ethereum/cmd/utils"
+	"github.com/ethereum/go-ethereum/common"
+	"github.com/ethereum/go-ethereum/common/hexutil"
+	"github.com/ethereum/go-ethereum/core/types"
+	"github.com/ethereum/go-ethereum/crypto"
+	"github.com/ethereum/go-ethereum/internal/ethapi"
+	"github.com/ethereum/go-ethereum/internal/flags"
+	"github.com/ethereum/go-ethereum/log"
+	"github.com/ethereum/go-ethereum/node"
+	"github.com/ethereum/go-ethereum/params"
+	"github.com/ethereum/go-ethereum/rlp"
+	"github.com/ethereum/go-ethereum/rpc"
+	"github.com/ethereum/go-ethereum/signer/core"
+	"github.com/ethereum/go-ethereum/signer/core/apitypes"
+	"github.com/ethereum/go-ethereum/signer/fourbyte"
+	"github.com/ethereum/go-ethereum/signer/rules"
+	"github.com/ethereum/go-ethereum/signer/storage"
 	"github.com/mattn/go-colorable"
 	"github.com/mattn/go-isatty"
 	"gopkg.in/urfave/cli.v1"
@@ -100,7 +100,7 @@ var (
 	chainIdFlag = cli.Int64Flag{
 		Name:  "chainid",
 		Value: params.MainnetChainConfig.ChainID.Int64(),
-		Usage: "Chain id to use for signing (3030=mainnet, 182=Devnet)",
+		Usage: "Chain id to use for signing (1=mainnet, 3=Ropsten, 4=Rinkeby, 5=Goerli)",
 	}
 	rpcPortFlag = cli.IntFlag{
 		Name:  "http.port",
@@ -795,7 +795,7 @@ func checkFile(filename string) error {
 	}
 	// Check the unix permission bits
 	// However, on windows, we cannot use the unix perm-bits, see
-	// https://github.com/fgeth/fgeth/issues/20123
+	// https://github.com/ethereum/go-ethereum/issues/20123
 	if runtime.GOOS != "windows" && info.Mode().Perm()&0377 != 0 {
 		return fmt.Errorf("file (%v) has insecure file permissions (%v)", filename, info.Mode().String())
 	}

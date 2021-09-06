@@ -23,12 +23,12 @@ import (
 	"fmt"
 	"math/big"
 
-	"github.com/fgeth/fgeth/common"
-	"github.com/fgeth/fgeth/common/hexutil"
-	"github.com/fgeth/fgeth/common/math"
-	"github.com/fgeth/fgeth/core/types"
-	"github.com/fgeth/fgeth/log"
-	"github.com/fgeth/fgeth/rpc"
+	"github.com/ethereum/go-ethereum/common"
+	"github.com/ethereum/go-ethereum/common/hexutil"
+	"github.com/ethereum/go-ethereum/common/math"
+	"github.com/ethereum/go-ethereum/core/types"
+	"github.com/ethereum/go-ethereum/log"
+	"github.com/ethereum/go-ethereum/rpc"
 )
 
 // TransactionArgs represents the arguments to construct a new transaction
@@ -45,7 +45,7 @@ type TransactionArgs struct {
 
 	// We accept "data" and "input" for backwards-compatibility reasons.
 	// "input" is the newer name and should be preferred by clients.
-	// Issue detail: https://github.com/fgeth/fgeth/issues/15628
+	// Issue detail: https://github.com/ethereum/go-ethereum/issues/15628
 	Data  *hexutil.Bytes `json:"data"`
 	Input *hexutil.Bytes `json:"input"`
 
@@ -146,7 +146,6 @@ func (args *TransactionArgs) setDefaults(ctx context.Context, b Backend) error {
 	if args.Gas == nil {
 		// These fields are immutable during the estimation, safe to
 		// pass the pointer directly.
-		data := args.data()
 		callArgs := TransactionArgs{
 			From:                 args.From,
 			To:                   args.To,
@@ -154,7 +153,7 @@ func (args *TransactionArgs) setDefaults(ctx context.Context, b Backend) error {
 			MaxFeePerGas:         args.MaxFeePerGas,
 			MaxPriorityFeePerGas: args.MaxPriorityFeePerGas,
 			Value:                args.Value,
-			Data:                 (*hexutil.Bytes)(&data),
+			Data:                 args.Data,
 			AccessList:           args.AccessList,
 		}
 		pendingBlockNr := rpc.BlockNumberOrHashWithNumber(rpc.PendingBlockNumber)

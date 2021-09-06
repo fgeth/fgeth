@@ -21,20 +21,20 @@ import (
 	"math/big"
 	"sync"
 
-	"github.com/fgeth/fgeth/common"
-	"github.com/fgeth/fgeth/core"
-	"github.com/fgeth/fgeth/core/rawdb"
-	"github.com/fgeth/fgeth/core/types"
-	"github.com/fgeth/fgeth/eth/ethconfig"
-	"github.com/fgeth/fgeth/ethclient"
-	"github.com/fgeth/fgeth/ethdb"
-	"github.com/fgeth/fgeth/les/checkpointoracle"
-	"github.com/fgeth/fgeth/light"
-	"github.com/fgeth/fgeth/log"
-	"github.com/fgeth/fgeth/node"
-	"github.com/fgeth/fgeth/p2p"
-	"github.com/fgeth/fgeth/p2p/enode"
-	"github.com/fgeth/fgeth/params"
+	"github.com/ethereum/go-ethereum/common"
+	"github.com/ethereum/go-ethereum/core"
+	"github.com/ethereum/go-ethereum/core/rawdb"
+	"github.com/ethereum/go-ethereum/core/types"
+	"github.com/ethereum/go-ethereum/eth/ethconfig"
+	"github.com/ethereum/go-ethereum/ethclient"
+	"github.com/ethereum/go-ethereum/ethdb"
+	"github.com/ethereum/go-ethereum/les/checkpointoracle"
+	"github.com/ethereum/go-ethereum/light"
+	"github.com/ethereum/go-ethereum/log"
+	"github.com/ethereum/go-ethereum/node"
+	"github.com/ethereum/go-ethereum/p2p"
+	"github.com/ethereum/go-ethereum/p2p/enode"
+	"github.com/ethereum/go-ethereum/params"
 )
 
 func errResp(code errCode, format string, v ...interface{}) error {
@@ -63,7 +63,7 @@ type lesCommons struct {
 // NodeInfo represents a short summary of the Ethereum sub-protocol metadata
 // known about the host peer.
 type NodeInfo struct {
-	Network    uint64                   `json:"network"`    // Ethereum network ID (3030=FGeth, Devnet=182)
+	Network    uint64                   `json:"network"`    // Ethereum network ID (1=Frontier, 2=Morden, Ropsten=3, Rinkeby=4)
 	Difficulty *big.Int                 `json:"difficulty"` // Total difficulty of the host's blockchain
 	Genesis    common.Hash              `json:"genesis"`    // SHA3 hash of the host's genesis block
 	Config     *params.ChainConfig      `json:"config"`     // Chain configuration for the fork rules

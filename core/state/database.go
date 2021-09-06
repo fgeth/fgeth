@@ -21,10 +21,10 @@ import (
 	"fmt"
 
 	"github.com/VictoriaMetrics/fastcache"
-	"github.com/fgeth/fgeth/common"
-	"github.com/fgeth/fgeth/core/rawdb"
-	"github.com/fgeth/fgeth/ethdb"
-	"github.com/fgeth/fgeth/trie"
+	"github.com/ethereum/go-ethereum/common"
+	"github.com/ethereum/go-ethereum/core/rawdb"
+	"github.com/ethereum/go-ethereum/ethdb"
+	"github.com/ethereum/go-ethereum/trie"
 	lru "github.com/hashicorp/golang-lru"
 )
 
@@ -86,7 +86,7 @@ type Trie interface {
 
 	// Commit writes all nodes to the trie's memory database, tracking the internal
 	// and external (for account tries) references.
-	Commit(onleaf trie.LeafCallback) (common.Hash, int, error)
+	Commit(onleaf trie.LeafCallback) (common.Hash, error)
 
 	// NodeIterator returns an iterator that returns nodes of the trie. Iteration
 	// starts at the key after the given start key.

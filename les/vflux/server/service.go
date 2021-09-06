@@ -22,11 +22,11 @@ import (
 	"sync"
 	"time"
 
-	"github.com/fgeth/fgeth/les/utils"
-	"github.com/fgeth/fgeth/les/vflux"
-	"github.com/fgeth/fgeth/log"
-	"github.com/fgeth/fgeth/p2p/enode"
-	"github.com/fgeth/fgeth/rlp"
+	"github.com/ethereum/go-ethereum/les/utils"
+	"github.com/ethereum/go-ethereum/les/vflux"
+	"github.com/ethereum/go-ethereum/log"
+	"github.com/ethereum/go-ethereum/p2p/enode"
+	"github.com/ethereum/go-ethereum/rlp"
 )
 
 type (

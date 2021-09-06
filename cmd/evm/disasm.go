@@ -22,7 +22,7 @@ import (
 	"io/ioutil"
 	"strings"
 
-	"github.com/fgeth/fgeth/core/asm"
+	"github.com/ethereum/go-ethereum/core/asm"
 	"gopkg.in/urfave/cli.v1"
 )
 

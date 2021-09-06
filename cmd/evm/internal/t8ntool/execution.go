@@ -21,21 +21,20 @@ import (
 	"math/big"
 	"os"
 
-	"github.com/fgeth/fgeth/common"
-	"github.com/fgeth/fgeth/common/math"
-	"github.com/fgeth/fgeth/consensus/ethash"
-	"github.com/fgeth/fgeth/consensus/misc"
-	"github.com/fgeth/fgeth/core"
-	"github.com/fgeth/fgeth/core/rawdb"
-	"github.com/fgeth/fgeth/core/state"
-	"github.com/fgeth/fgeth/core/types"
-	"github.com/fgeth/fgeth/core/vm"
-	"github.com/fgeth/fgeth/crypto"
-	"github.com/fgeth/fgeth/ethdb"
-	"github.com/fgeth/fgeth/log"
-	"github.com/fgeth/fgeth/params"
-	"github.com/fgeth/fgeth/rlp"
-	"github.com/fgeth/fgeth/trie"
+	"github.com/ethereum/go-ethereum/common"
+	"github.com/ethereum/go-ethereum/common/math"
+	"github.com/ethereum/go-ethereum/consensus/misc"
+	"github.com/ethereum/go-ethereum/core"
+	"github.com/ethereum/go-ethereum/core/rawdb"
+	"github.com/ethereum/go-ethereum/core/state"
+	"github.com/ethereum/go-ethereum/core/types"
+	"github.com/ethereum/go-ethereum/core/vm"
+	"github.com/ethereum/go-ethereum/crypto"
+	"github.com/ethereum/go-ethereum/ethdb"
+	"github.com/ethereum/go-ethereum/log"
+	"github.com/ethereum/go-ethereum/params"
+	"github.com/ethereum/go-ethereum/rlp"
+	"github.com/ethereum/go-ethereum/trie"
 	"golang.org/x/crypto/sha3"
 )
 
@@ -47,14 +46,13 @@ type Prestate struct {
 // ExecutionResult contains the execution status after running a state test, any
 // error that might have occurred and a dump of the final state if requested.
 type ExecutionResult struct {
-	StateRoot   common.Hash           `json:"stateRoot"`
-	TxRoot      common.Hash           `json:"txRoot"`
-	ReceiptRoot common.Hash           `json:"receiptRoot"`
-	LogsHash    common.Hash           `json:"logsHash"`
-	Bloom       types.Bloom           `json:"logsBloom"        gencodec:"required"`
-	Receipts    types.Receipts        `json:"receipts"`
-	Rejected    []*rejectedTx         `json:"rejected,omitempty"`
-	Difficulty  *math.HexOrDecimal256 `json:"currentDifficulty" gencodec:"required"`
+	StateRoot   common.Hash    `json:"stateRoot"`
+	TxRoot      common.Hash    `json:"txRoot"`
+	ReceiptRoot common.Hash    `json:"receiptRoot"`
+	LogsHash    common.Hash    `json:"logsHash"`
+	Bloom       types.Bloom    `json:"logsBloom"        gencodec:"required"`
+	Receipts    types.Receipts `json:"receipts"`
+	Rejected    []*rejectedTx  `json:"rejected,omitempty"`
 }
 
 type ommer struct {
@@ -64,28 +62,23 @@ type ommer struct {
 
 //go:generate gencodec -type stEnv -field-override stEnvMarshaling -out gen_stenv.go
 type stEnv struct {
-	Coinbase         common.Address                      `json:"currentCoinbase"   gencodec:"required"`
-	Difficulty       *big.Int                            `json:"currentDifficulty"`
-	ParentDifficulty *big.Int                            `json:"parentDifficulty"`
-	GasLimit         uint64                              `json:"currentGasLimit"   gencodec:"required"`
-	Number           uint64                              `json:"currentNumber"     gencodec:"required"`
-	Timestamp        uint64                              `json:"currentTimestamp"  gencodec:"required"`
-	ParentTimestamp  uint64                              `json:"parentTimestamp,omitempty"`
-	BlockHashes      map[math.HexOrDecimal64]common.Hash `json:"blockHashes,omitempty"`
-	Ommers           []ommer                             `json:"ommers,omitempty"`
-	BaseFee          *big.Int                            `json:"currentBaseFee,omitempty"`
-	ParentUncleHash  common.Hash                         `json:"parentUncleHash"`
+	Coinbase    common.Address                      `json:"currentCoinbase"   gencodec:"required"`
+	Difficulty  *big.Int                            `json:"currentDifficulty" gencodec:"required"`
+	GasLimit    uint64                              `json:"currentGasLimit"   gencodec:"required"`
+	Number      uint64                              `json:"currentNumber"     gencodec:"required"`
+	Timestamp   uint64                              `json:"currentTimestamp"  gencodec:"required"`
+	BlockHashes map[math.HexOrDecimal64]common.Hash `json:"blockHashes,omitempty"`
+	Ommers      []ommer                             `json:"ommers,omitempty"`
+	BaseFee     *big.Int                            `json:"currentBaseFee,omitempty"`
 }
 
 type stEnvMarshaling struct {
-	Coinbase         common.UnprefixedAddress
-	Difficulty       *math.HexOrDecimal256
-	ParentDifficulty *math.HexOrDecimal256
-	GasLimit         math.HexOrDecimal64
-	Number           math.HexOrDecimal64
-	Timestamp        math.HexOrDecimal64
-	ParentTimestamp  math.HexOrDecimal64
-	BaseFee          *math.HexOrDecimal256
+	Coinbase   common.UnprefixedAddress
+	Difficulty *math.HexOrDecimal256
+	GasLimit   math.HexOrDecimal64
+	Number     math.HexOrDecimal64
+	Timestamp  math.HexOrDecimal64
+	BaseFee    *math.HexOrDecimal256
 }
 
 type rejectedTx struct {
@@ -254,7 +247,6 @@ func (pre *Prestate) Apply(vmConfig vm.Config, chainConfig *params.ChainConfig,
 		LogsHash:    rlpHash(statedb.Logs()),
 		Receipts:    receipts,
 		Rejected:    rejectedTxs,
-		Difficulty:  (*math.HexOrDecimal256)(vmContext.Difficulty),
 	}
 	return statedb, execRs, nil
 }
@@ -281,24 +273,4 @@ func rlpHash(x interface{}) (h common.Hash) {
 	rlp.Encode(hw, x)
 	hw.Sum(h[:0])
 	return h
-}
-
-// calcDifficulty is based on ethash.CalcDifficulty. This method is used in case
-// the caller does not provide an explicit difficulty, but instead provides only
-// parent timestamp + difficulty.
-// Note: this method only works for ethash engine.
-func calcDifficulty(config *params.ChainConfig, number, currentTime, parentTime uint64,
-	parentDifficulty *big.Int, parentUncleHash common.Hash) *big.Int {
-	uncleHash := parentUncleHash
-	if uncleHash == (common.Hash{}) {
-		uncleHash = types.EmptyUncleHash
-	}
-	parent := &types.Header{
-		ParentHash: common.Hash{},
-		UncleHash:  uncleHash,
-		Difficulty: parentDifficulty,
-		Number:     new(big.Int).SetUint64(number - 1),
-		Time:       parentTime,
-	}
-	return ethash.CalcDifficulty(config, currentTime, parent)
 }

@@ -27,7 +27,7 @@ import (
 	"sync"
 	"testing"
 
-	"github.com/fgeth/fgeth/common/math"
+	"github.com/ethereum/go-ethereum/common/math"
 )
 
 type testEncoder struct {
@@ -531,34 +531,6 @@ type byteArrayStruct struct {
 func BenchmarkEncodeByteArrayStruct(b *testing.B) {
 	var out bytes.Buffer
 	var value byteArrayStruct
-
-	b.ReportAllocs()
-	for i := 0; i < b.N; i++ {
-		out.Reset()
-		if err := Encode(&out, &value); err != nil {
-			b.Fatal(err)
-		}
-	}
-}
-
-type structSliceElem struct {
-	X uint64
-	Y uint64
-	Z uint64
-}
-
-type structPtrSlice []*structSliceElem
-
-func BenchmarkEncodeStructPtrSlice(b *testing.B) {
-	var out bytes.Buffer
-	var value = structPtrSlice{
-		&structSliceElem{1, 1, 1},
-		&structSliceElem{2, 2, 2},
-		&structSliceElem{3, 3, 3},
-		&structSliceElem{5, 5, 5},
-		&structSliceElem{6, 6, 6},
-		&structSliceElem{7, 7, 7},
-	}
 
 	b.ReportAllocs()
 	for i := 0; i < b.N; i++ {

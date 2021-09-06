@@ -23,11 +23,11 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/fgeth/fgeth/common"
-	"github.com/fgeth/fgeth/core/rawdb"
-	"github.com/fgeth/fgeth/ethdb"
-	"github.com/fgeth/fgeth/log"
-	"github.com/fgeth/fgeth/metrics"
+	"github.com/ethereum/go-ethereum/common"
+	"github.com/ethereum/go-ethereum/core/rawdb"
+	"github.com/ethereum/go-ethereum/ethdb"
+	"github.com/ethereum/go-ethereum/log"
+	"github.com/ethereum/go-ethereum/metrics"
 	bloomfilter "github.com/holiman/bloomfilter/v2"
 )
 
@@ -129,8 +129,6 @@ func (b *SyncBloom) init(database ethdb.Iteratee) {
 func (b *SyncBloom) meter() {
 	// check every second
 	tick := time.NewTicker(1 * time.Second)
-	defer tick.Stop()
-
 	for {
 		select {
 		case <-tick.C:

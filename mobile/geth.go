@@ -24,17 +24,17 @@ import (
 	"fmt"
 	"path/filepath"
 
-	"github.com/fgeth/fgeth/core"
-	"github.com/fgeth/fgeth/eth/downloader"
-	"github.com/fgeth/fgeth/eth/ethconfig"
-	"github.com/fgeth/fgeth/ethclient"
-	"github.com/fgeth/fgeth/ethstats"
-	"github.com/fgeth/fgeth/internal/debug"
-	"github.com/fgeth/fgeth/les"
-	"github.com/fgeth/fgeth/node"
-	"github.com/fgeth/fgeth/p2p"
-	"github.com/fgeth/fgeth/p2p/nat"
-	"github.com/fgeth/fgeth/params"
+	"github.com/ethereum/go-ethereum/core"
+	"github.com/ethereum/go-ethereum/eth/downloader"
+	"github.com/ethereum/go-ethereum/eth/ethconfig"
+	"github.com/ethereum/go-ethereum/ethclient"
+	"github.com/ethereum/go-ethereum/ethstats"
+	"github.com/ethereum/go-ethereum/internal/debug"
+	"github.com/ethereum/go-ethereum/les"
+	"github.com/ethereum/go-ethereum/node"
+	"github.com/ethereum/go-ethereum/p2p"
+	"github.com/ethereum/go-ethereum/p2p/nat"
+	"github.com/ethereum/go-ethereum/params"
 )
 
 // NodeConfig represents the collection of configuration values to fine tune the Geth
@@ -158,14 +158,27 @@ func NewNode(datadir string, config *NodeConfig) (stack *Node, _ error) {
 		if err := json.Unmarshal([]byte(config.EthereumGenesis), genesis); err != nil {
 			return nil, fmt.Errorf("invalid genesis spec: %v", err)
 		}
-		// If we have the Devnet testnet, hard code the chain configs too
-		if config.EthereumGenesis == DevnetGenesis() {
-			genesis.Config = params.DevnetChainConfig
+		// If we have the Ropsten testnet, hard code the chain configs too
+		if config.EthereumGenesis == RopstenGenesis() {
+			genesis.Config = params.RopstenChainConfig
 			if config.EthereumNetworkID == 1 {
-				config.EthereumNetworkID = 182
+				config.EthereumNetworkID = 3
 			}
 		}
-		
+		// If we have the Rinkeby testnet, hard code the chain configs too
+		if config.EthereumGenesis == RinkebyGenesis() {
+			genesis.Config = params.RinkebyChainConfig
+			if config.EthereumNetworkID == 1 {
+				config.EthereumNetworkID = 4
+			}
+		}
+		// If we have the Goerli testnet, hard code the chain configs too
+		if config.EthereumGenesis == GoerliGenesis() {
+			genesis.Config = params.GoerliChainConfig
+			if config.EthereumNetworkID == 1 {
+				config.EthereumNetworkID = 5
+			}
+		}
 	}
 	// Register the Ethereum protocol if requested
 	if config.EthereumEnabled {

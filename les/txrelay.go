@@ -21,9 +21,9 @@ import (
 	"math/rand"
 	"sync"
 
-	"github.com/fgeth/fgeth/common"
-	"github.com/fgeth/fgeth/core/types"
-	"github.com/fgeth/fgeth/rlp"
+	"github.com/ethereum/go-ethereum/common"
+	"github.com/ethereum/go-ethereum/core/types"
+	"github.com/ethereum/go-ethereum/rlp"
 )
 
 type lesTxRelay struct {

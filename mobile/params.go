@@ -21,9 +21,9 @@ package geth
 import (
 	"encoding/json"
 
-	"github.com/fgeth/fgeth/core"
-	"github.com/fgeth/fgeth/p2p/enode"
-	"github.com/fgeth/fgeth/params"
+	"github.com/ethereum/go-ethereum/core"
+	"github.com/ethereum/go-ethereum/p2p/enode"
+	"github.com/ethereum/go-ethereum/params"
 )
 
 // MainnetGenesis returns the JSON spec to use for the main Ethereum network. It
@@ -32,15 +32,32 @@ func MainnetGenesis() string {
 	return ""
 }
 
-// DevnetGenesis returns the JSON spec to use for the Devnet test network.
-func devnetGenesis() string {
-	enc, err := json.Marshal(core.DefaultDevnetGenesisBlock())
+// RopstenGenesis returns the JSON spec to use for the Ropsten test network.
+func RopstenGenesis() string {
+	enc, err := json.Marshal(core.DefaultRopstenGenesisBlock())
 	if err != nil {
 		panic(err)
 	}
 	return string(enc)
 }
 
+// RinkebyGenesis returns the JSON spec to use for the Rinkeby test network
+func RinkebyGenesis() string {
+	enc, err := json.Marshal(core.DefaultRinkebyGenesisBlock())
+	if err != nil {
+		panic(err)
+	}
+	return string(enc)
+}
+
+// GoerliGenesis returns the JSON spec to use for the Goerli test network
+func GoerliGenesis() string {
+	enc, err := json.Marshal(core.DefaultGoerliGenesisBlock())
+	if err != nil {
+		panic(err)
+	}
+	return string(enc)
+}
 
 // FoundationBootnodes returns the enode URLs of the P2P bootstrap nodes operated
 // by the foundation running the V5 discovery protocol.

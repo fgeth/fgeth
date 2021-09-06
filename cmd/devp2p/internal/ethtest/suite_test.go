@@ -21,11 +21,11 @@ import (
 	"testing"
 	"time"
 
-	"github.com/fgeth/fgeth/eth"
-	"github.com/fgeth/fgeth/eth/ethconfig"
-	"github.com/fgeth/fgeth/internal/utesting"
-	"github.com/fgeth/fgeth/node"
-	"github.com/fgeth/fgeth/p2p"
+	"github.com/ethereum/go-ethereum/eth"
+	"github.com/ethereum/go-ethereum/eth/ethconfig"
+	"github.com/ethereum/go-ethereum/internal/utesting"
+	"github.com/ethereum/go-ethereum/node"
+	"github.com/ethereum/go-ethereum/p2p"
 )
 
 var (
@@ -45,7 +45,7 @@ func TestEthSuite(t *testing.T) {
 	if err != nil {
 		t.Fatalf("could not create new test suite: %v", err)
 	}
-	for _, test := range suite.Eth66Tests() {
+	for _, test := range suite.AllEthTests() {
 		t.Run(test.Name, func(t *testing.T) {
 			result := utesting.RunTAP([]utesting.Test{{Name: test.Name, Fn: test.Fn}}, os.Stdout)
 			if result[0].Failed {

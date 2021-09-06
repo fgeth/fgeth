@@ -17,8 +17,8 @@
 package runtime
 
 import (
-	"github.com/fgeth/fgeth/core"
-	"github.com/fgeth/fgeth/core/vm"
+	"github.com/ethereum/go-ethereum/core"
+	"github.com/ethereum/go-ethereum/core/vm"
 )
 
 func NewEnv(cfg *Config) *vm.EVM {

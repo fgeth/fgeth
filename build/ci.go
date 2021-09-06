@@ -59,9 +59,9 @@ import (
 	"time"
 
 	"github.com/cespare/cp"
-	"github.com/fgeth/fgeth/crypto/signify"
-	"github.com/fgeth/fgeth/internal/build"
-	"github.com/fgeth/fgeth/params"
+	"github.com/ethereum/go-ethereum/crypto/signify"
+	"github.com/ethereum/go-ethereum/internal/build"
+	"github.com/ethereum/go-ethereum/params"
 )
 
 var (
@@ -129,13 +129,19 @@ var (
 
 	// Distros for which packages are created.
 	// Note: vivid is unsupported because there is no golang-1.6 package for it.
-	// Note: the following Ubuntu releases have been officially deprecated on Launchpad:
-	//   wily, yakkety, zesty, artful, cosmic, disco, eoan, groovy
+	// Note: wily is unsupported because it was officially deprecated on Launchpad.
+	// Note: yakkety is unsupported because it was officially deprecated on Launchpad.
+	// Note: zesty is unsupported because it was officially deprecated on Launchpad.
+	// Note: artful is unsupported because it was officially deprecated on Launchpad.
+	// Note: cosmic is unsupported because it was officially deprecated on Launchpad.
+	// Note: disco is unsupported because it was officially deprecated on Launchpad.
+	// Note: eoan is unsupported because it was officially deprecated on Launchpad.
 	debDistroGoBoots = map[string]string{
 		"trusty":  "golang-1.11",
 		"xenial":  "golang-go",
 		"bionic":  "golang-go",
 		"focal":   "golang-go",
+		"groovy":  "golang-go",
 		"hirsute": "golang-go",
 	}
 
@@ -147,7 +153,7 @@ var (
 	// This is the version of go that will be downloaded by
 	//
 	//     go run ci.go install -dlgo
-	dlgoVersion = "1.17"
+	dlgoVersion = "1.16.4"
 )
 
 var GOBIN, _ = filepath.Abs(filepath.Join("build", "bin"))
@@ -324,7 +330,7 @@ func doLint(cmdline []string) {
 
 // downloadLinter downloads and unpacks golangci-lint.
 func downloadLinter(cachedir string) string {
-	const version = "1.42.0"
+	const version = "1.39.0"
 
 	csdb := build.MustLoadChecksums("build/checksums.txt")
 	base := fmt.Sprintf("golangci-lint-%s-%s-%s", version, runtime.GOOS, runtime.GOARCH)
@@ -994,7 +1000,7 @@ func doAndroidArchive(cmdline []string) {
 	build.MustRun(tc.Go("mod", "download"))
 
 	// Build the Android archive and Maven resources
-	build.MustRun(gomobileTool("bind", "-ldflags", "-s -w", "--target", "android", "--javapkg", "org.ethereum", "-v", "github.com/fgeth/fgeth/mobile"))
+	build.MustRun(gomobileTool("bind", "-ldflags", "-s -w", "--target", "android", "--javapkg", "org.ethereum", "-v", "github.com/ethereum/go-ethereum/mobile"))
 
 	if *local {
 		// If we're building locally, copy bundle to build dir and skip Maven
@@ -1123,7 +1129,7 @@ func doXCodeFramework(cmdline []string) {
 	build.MustRun(tc.Go("mod", "download"))
 
 	// Build the iOS XCode framework
-	bind := gomobileTool("bind", "-ldflags", "-s -w", "--target", "ios", "-v", "github.com/fgeth/fgeth/mobile")
+	bind := gomobileTool("bind", "-ldflags", "-s -w", "--target", "ios", "-v", "github.com/ethereum/go-ethereum/mobile")
 
 	if *local {
 		// If we're building locally, use the build folder and stop afterwards

@@ -21,13 +21,13 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/fgeth/fgeth/common"
-	"github.com/fgeth/fgeth/core/rawdb"
-	"github.com/fgeth/fgeth/core/state"
-	"github.com/fgeth/fgeth/core/types"
-	"github.com/fgeth/fgeth/crypto"
-	"github.com/fgeth/fgeth/ethdb"
-	"github.com/fgeth/fgeth/trie"
+	"github.com/ethereum/go-ethereum/common"
+	"github.com/ethereum/go-ethereum/core/rawdb"
+	"github.com/ethereum/go-ethereum/core/state"
+	"github.com/ethereum/go-ethereum/core/types"
+	"github.com/ethereum/go-ethereum/crypto"
+	"github.com/ethereum/go-ethereum/ethdb"
+	"github.com/ethereum/go-ethereum/trie"
 )
 
 var (
@@ -125,9 +125,9 @@ func (t *odrTrie) TryDelete(key []byte) error {
 	})
 }
 
-func (t *odrTrie) Commit(onleaf trie.LeafCallback) (common.Hash, int, error) {
+func (t *odrTrie) Commit(onleaf trie.LeafCallback) (common.Hash, error) {
 	if t.trie == nil {
-		return t.id.Root, 0, nil
+		return t.id.Root, nil
 	}
 	return t.trie.Commit(onleaf)
 }

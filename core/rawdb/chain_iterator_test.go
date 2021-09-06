@@ -23,8 +23,8 @@ import (
 	"sync"
 	"testing"
 
-	"github.com/fgeth/fgeth/common"
-	"github.com/fgeth/fgeth/core/types"
+	"github.com/ethereum/go-ethereum/common"
+	"github.com/ethereum/go-ethereum/core/types"
 )
 
 func TestChainIterator(t *testing.T) {

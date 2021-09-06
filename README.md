@@ -1,17 +1,26 @@
-## FG-Ethereum
+## Go Ethereum
 
-Official Golang implementation of the FG-Ethereum protocol.
+Official Golang implementation of the Ethereum protocol.
 
+[![API Reference](
+https://camo.githubusercontent.com/915b7be44ada53c290eb157634330494ebe3e30a/68747470733a2f2f676f646f632e6f72672f6769746875622e636f6d2f676f6c616e672f6764646f3f7374617475732e737667
+)](https://pkg.go.dev/github.com/ethereum/go-ethereum?tab=doc)
+[![Go Report Card](https://goreportcard.com/badge/github.com/ethereum/go-ethereum)](https://goreportcard.com/report/github.com/ethereum/go-ethereum)
+[![Travis](https://travis-ci.com/ethereum/go-ethereum.svg?branch=master)](https://travis-ci.com/ethereum/go-ethereum)
+[![Discord](https://img.shields.io/badge/discord-join%20chat-blue.svg)](https://discord.gg/nthXNEv)
+
+Automated builds are available for stable releases and the unstable master branch. Binary
+archives are published at https://geth.ethereum.org/downloads/.
 
 ## Building the source
 
-For prerequisites and detailed build instructions please read the [Installation Instructions](https://fgeth.com/docs/install-and-build/installing-geth).
+For prerequisites and detailed build instructions please read the [Installation Instructions](https://geth.ethereum.org/docs/install-and-build/installing-geth).
 
-Building `fgeth` requires both a Go (version 1.14 or later) and a C compiler. You can install
+Building `geth` requires both a Go (version 1.14 or later) and a C compiler. You can install
 them using your favourite package manager. Once the dependencies are installed, run
 
 ```shell
-make fgeth
+make geth
 ```
 
 or, to build the full suite of utilities:
@@ -22,21 +31,21 @@ make all
 
 ## Executables
 
-This go-ethereum project comes with several wrappers/executables found in the `cmd`
+The go-ethereum project comes with several wrappers/executables found in the `cmd`
 directory.
 
 |    Command    | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
 | :-----------: | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-|  **`fgeth`**   | Our main FG-Ethereum CLI client. It is the entry point into the FG-Ethereum network (main-, test- or private net), capable of running as a full node (default), archive node (retaining all historical state) or a light node (retrieving data live). It can be used by other processes as a gateway into the FG-Ethereum network via JSON RPC endpoints exposed on top of HTTP, WebSocket and/or IPC transports. `fgeth --help` and the [CLI page](https://fgeth.com/docs/interface/command-line-options) for command line options.          |
-|   `clef`    | Stand-alone signing tool, which can be used as a backend signer for `fgeth`.  |
+|  **`geth`**   | Our main Ethereum CLI client. It is the entry point into the Ethereum network (main-, test- or private net), capable of running as a full node (default), archive node (retaining all historical state) or a light node (retrieving data live). It can be used by other processes as a gateway into the Ethereum network via JSON RPC endpoints exposed on top of HTTP, WebSocket and/or IPC transports. `geth --help` and the [CLI page](https://geth.ethereum.org/docs/interface/command-line-options) for command line options.          |
+|   `clef`    | Stand-alone signing tool, which can be used as a backend signer for `geth`.  |
 |   `devp2p`    | Utilities to interact with nodes on the networking layer, without running a full blockchain. |
-|   `abigen`    | Source code generator to convert FG-Ethereum contract definitions into easy to use, compile-time type-safe Go packages. It operates on plain [Ethereum contract ABIs](https://docs.soliditylang.org/en/develop/abi-spec.html) with expanded functionality if the contract bytecode is also available. However, it also accepts Solidity source files, making development much more streamlined. Please see our [Native DApps](https://geth.ethereum.org/docs/dapp/native-bindings) page for details. |
-|  `bootnode`   | Stripped down version of our FG-Ethereum client implementation that only takes part in the network node discovery protocol, but does not run any of the higher level application protocols. It can be used as a lightweight bootstrap node to aid in finding peers in private networks.                                                                                                                                                                                                                                                                 |
+|   `abigen`    | Source code generator to convert Ethereum contract definitions into easy to use, compile-time type-safe Go packages. It operates on plain [Ethereum contract ABIs](https://docs.soliditylang.org/en/develop/abi-spec.html) with expanded functionality if the contract bytecode is also available. However, it also accepts Solidity source files, making development much more streamlined. Please see our [Native DApps](https://geth.ethereum.org/docs/dapp/native-bindings) page for details. |
+|  `bootnode`   | Stripped down version of our Ethereum client implementation that only takes part in the network node discovery protocol, but does not run any of the higher level application protocols. It can be used as a lightweight bootstrap node to aid in finding peers in private networks.                                                                                                                                                                                                                                                                 |
 |     `evm`     | Developer utility version of the EVM (Ethereum Virtual Machine) that is capable of running bytecode snippets within a configurable environment and execution mode. Its purpose is to allow isolated, fine-grained debugging of EVM opcodes (e.g. `evm --code 60ff60ff --debug run`).                                                                                                                                                                                                                                                                     |
-|   `rlpdump`   | Developer utility tool to convert binary RLP ([Recursive Length Prefix](https://eth.wiki/en/fundamentals/rlp)) dumps (data encoding used by the FG-Ethereum protocol both network as well as consensus wise) to user-friendlier hierarchical representation (e.g. `rlpdump --hex CE0183FFFFFFC4C304050583616263`).                                                                                                                                                                                                                                 |
-|   `puppeth`   | a CLI wizard that aids in creating a new FG-Ethereum network.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
+|   `rlpdump`   | Developer utility tool to convert binary RLP ([Recursive Length Prefix](https://eth.wiki/en/fundamentals/rlp)) dumps (data encoding used by the Ethereum protocol both network as well as consensus wise) to user-friendlier hierarchical representation (e.g. `rlpdump --hex CE0183FFFFFFC4C304050583616263`).                                                                                                                                                                                                                                 |
+|   `puppeth`   | a CLI wizard that aids in creating a new Ethereum network.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
 
-## Running `fgeth`
+## Running `geth`
 
 Going through all the possible command line flags is out of scope here (please consult our
 [CLI Wiki page](https://geth.ethereum.org/docs/interface/command-line-options)),
@@ -51,53 +60,75 @@ particular use-case the user doesn't care about years-old historical data, so we
 fast-sync quickly to the current state of the network. To do so:
 
 ```shell
-$ fgeth console
+$ geth console
 ```
 
 This command will:
  * Start `geth` in snap sync mode (default, can be changed with the `--syncmode` flag),
    causing it to download more data in exchange for avoiding processing the entire history
    of the Ethereum network, which is very CPU intensive.
- * Start up `fgeth`'s built-in interactive [JavaScript console](https://geth.ethereum.org/docs/interface/javascript-console),
+ * Start up `geth`'s built-in interactive [JavaScript console](https://geth.ethereum.org/docs/interface/javascript-console),
    (via the trailing `console` subcommand) through which you can interact using [`web3` methods](https://web3js.readthedocs.io/en/) 
    (note: the `web3` version bundled within `geth` is very old, and not up to date with official docs),
-   as well as `fgeth`'s own [management APIs](https://geth.ethereum.org/docs/rpc/server).
+   as well as `geth`'s own [management APIs](https://geth.ethereum.org/docs/rpc/server).
    This tool is optional and if you leave it out you can always attach to an already running
-   `fgeth` instance with `fgeth attach`.
+   `geth` instance with `geth attach`.
 
-### A Full node on the Dev test network
+### A Full node on the Görli test network
 
-Transitioning towards developers, if you'd like to play around with creating FG-Ethereum
+Transitioning towards developers, if you'd like to play around with creating Ethereum
 contracts, you almost certainly would like to do that without any real money involved until
 you get the hang of the entire system. In other words, instead of attaching to the main
 network, you want to join the **test** network with your node, which is fully equivalent to
 the main network, but with play-Ether only.
 
 ```shell
-$ fgeth --dev console
+$ geth --goerli console
 ```
 
 The `console` subcommand has the exact same meaning as above and they are equally
 useful on the testnet too. Please, see above for their explanations if you've skipped here.
 
-Specifying the `--dev` flag, however, will reconfigure your `fgeth` instance a bit:
+Specifying the `--goerli` flag, however, will reconfigure your `geth` instance a bit:
 
- * Instead of connecting the main FG-Ethereum network, the client will connect to the Görli
+ * Instead of connecting the main Ethereum network, the client will connect to the Görli
    test network, which uses different P2P bootnodes, different network IDs and genesis
    states.
- * Instead of using the default data directory (`~/.fgethereum` on Linux for example), `fgeth`
-   will nest itself one level deeper into a `dev` subfolder (`~/.fgethereum/dev` on
+ * Instead of using the default data directory (`~/.ethereum` on Linux for example), `geth`
+   will nest itself one level deeper into a `goerli` subfolder (`~/.ethereum/goerli` on
    Linux). Note, on OSX and Linux this also means that attaching to a running testnet node
-   requires the use of a custom endpoint since `fgeth attach` will try to attach to a
+   requires the use of a custom endpoint since `geth attach` will try to attach to a
    production node endpoint by default, e.g.,
-   `fgeth attach <datadir>/dev/fgeth.ipc`. Windows users are not affected by
+   `geth attach <datadir>/goerli/geth.ipc`. Windows users are not affected by
    this.
 
 *Note: Although there are some internal protective measures to prevent transactions from
 crossing over between the main network and test network, you should make sure to always
 use separate accounts for play-money and real-money. Unless you manually move
-accounts, `fgeth` will by default correctly separate the two networks and will not make any
+accounts, `geth` will by default correctly separate the two networks and will not make any
 accounts available between them.*
+
+### Full node on the Rinkeby test network
+
+Go Ethereum also supports connecting to the older proof-of-authority based test network
+called [*Rinkeby*](https://www.rinkeby.io) which is operated by members of the community.
+
+```shell
+$ geth --rinkeby console
+```
+
+### Full node on the Ropsten test network
+
+In addition to Görli and Rinkeby, Geth also supports the ancient Ropsten testnet. The
+Ropsten test network is based on the Ethash proof-of-work consensus algorithm. As such,
+it has certain extra overhead and is more susceptible to reorganization attacks due to the
+network's low difficulty/security.
+
+```shell
+$ geth --ropsten console
+```
+
+*Note: Older Geth configurations store the Ropsten database in the `testnet` subdirectory.*
 
 ### Configuration
 

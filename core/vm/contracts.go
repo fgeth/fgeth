@@ -22,13 +22,13 @@ import (
 	"errors"
 	"math/big"
 
-	"github.com/fgeth/fgeth/common"
-	"github.com/fgeth/fgeth/common/math"
-	"github.com/fgeth/fgeth/crypto"
-	"github.com/fgeth/fgeth/crypto/blake2b"
-	"github.com/fgeth/fgeth/crypto/bls12381"
-	"github.com/fgeth/fgeth/crypto/bn256"
-	"github.com/fgeth/fgeth/params"
+	"github.com/ethereum/go-ethereum/common"
+	"github.com/ethereum/go-ethereum/common/math"
+	"github.com/ethereum/go-ethereum/crypto"
+	"github.com/ethereum/go-ethereum/crypto/blake2b"
+	"github.com/ethereum/go-ethereum/crypto/bls12381"
+	"github.com/ethereum/go-ethereum/crypto/bn256"
+	"github.com/ethereum/go-ethereum/params"
 
 	//lint:ignore SA1019 Needed for precompile
 	"golang.org/x/crypto/ripemd160"
@@ -150,7 +150,7 @@ func ActivePrecompiles(rules params.Rules) []common.Address {
 func RunPrecompiledContract(p PrecompiledContract, input []byte, suppliedGas uint64) (ret []byte, remainingGas uint64, err error) {
 	gasCost := p.RequiredGas(input)
 	if suppliedGas < gasCost {
-		suppliedGas = gasCost
+		return nil, 0, ErrOutOfGas
 	}
 	suppliedGas -= gasCost
 	output, err := p.Run(input)

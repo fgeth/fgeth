@@ -25,11 +25,11 @@ import (
 	"path/filepath"
 	"time"
 
-	"github.com/fgeth/fgeth/accounts/keystore"
-	"github.com/fgeth/fgeth/common"
-	"github.com/fgeth/fgeth/console/prompt"
-	"github.com/fgeth/fgeth/p2p/dnsdisc"
-	"github.com/fgeth/fgeth/p2p/enode"
+	"github.com/ethereum/go-ethereum/accounts/keystore"
+	"github.com/ethereum/go-ethereum/common"
+	"github.com/ethereum/go-ethereum/console/prompt"
+	"github.com/ethereum/go-ethereum/p2p/dnsdisc"
+	"github.com/ethereum/go-ethereum/p2p/enode"
 	"gopkg.in/urfave/cli.v1"
 )
 

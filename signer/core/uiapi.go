@@ -24,11 +24,11 @@ import (
 	"io/ioutil"
 	"math/big"
 
-	"github.com/fgeth/fgeth/accounts"
-	"github.com/fgeth/fgeth/accounts/keystore"
-	"github.com/fgeth/fgeth/common"
-	"github.com/fgeth/fgeth/common/math"
-	"github.com/fgeth/fgeth/crypto"
+	"github.com/ethereum/go-ethereum/accounts"
+	"github.com/ethereum/go-ethereum/accounts/keystore"
+	"github.com/ethereum/go-ethereum/common"
+	"github.com/ethereum/go-ethereum/common/math"
+	"github.com/ethereum/go-ethereum/crypto"
 )
 
 // SignerUIAPI implements methods Clef provides for a UI to query, in the bidirectional communication
@@ -156,8 +156,8 @@ func (s *UIServerAPI) ChainId() math.HexOrDecimal64 {
 }
 
 // SetChainId sets the chain id to use when signing transactions.
-// Example call to set Devnet:
-// {"jsonrpc":"2.0","method":"clef_setChainId","params":["182"], "id":8}
+// Example call to set Ropsten:
+// {"jsonrpc":"2.0","method":"clef_setChainId","params":["3"], "id":8}
 func (s *UIServerAPI) SetChainId(id math.HexOrDecimal64) math.HexOrDecimal64 {
 	s.extApi.chainID = new(big.Int).SetUint64(uint64(id))
 	return s.ChainId()

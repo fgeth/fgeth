@@ -25,9 +25,9 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/fgeth/fgeth/internal/testlog"
-	"github.com/fgeth/fgeth/log"
-	"github.com/fgeth/fgeth/rpc"
+	"github.com/ethereum/go-ethereum/internal/testlog"
+	"github.com/ethereum/go-ethereum/log"
+	"github.com/ethereum/go-ethereum/rpc"
 	"github.com/gorilla/websocket"
 	"github.com/stretchr/testify/assert"
 )

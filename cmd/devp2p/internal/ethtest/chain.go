@@ -26,17 +26,27 @@ import (
 	"os"
 	"strings"
 
-	"github.com/fgeth/fgeth/core"
-	"github.com/fgeth/fgeth/core/forkid"
-	"github.com/fgeth/fgeth/core/types"
-	"github.com/fgeth/fgeth/params"
-	"github.com/fgeth/fgeth/rlp"
+	"github.com/ethereum/go-ethereum/core"
+	"github.com/ethereum/go-ethereum/core/forkid"
+	"github.com/ethereum/go-ethereum/core/types"
+	"github.com/ethereum/go-ethereum/params"
+	"github.com/ethereum/go-ethereum/rlp"
 )
 
 type Chain struct {
 	genesis     core.Genesis
 	blocks      []*types.Block
 	chainConfig *params.ChainConfig
+}
+
+func (c *Chain) WriteTo(writer io.Writer) error {
+	for _, block := range c.blocks {
+		if err := rlp.Encode(writer, block); err != nil {
+			return err
+		}
+	}
+
+	return nil
 }
 
 // Len returns the length of the chain.

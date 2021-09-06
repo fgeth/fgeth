@@ -21,9 +21,9 @@ import (
 	"errors"
 	"os"
 
-	"github.com/fgeth/fgeth/common"
-	"github.com/fgeth/fgeth/core/rawdb"
-	"github.com/fgeth/fgeth/log"
+	"github.com/ethereum/go-ethereum/common"
+	"github.com/ethereum/go-ethereum/core/rawdb"
+	"github.com/ethereum/go-ethereum/log"
 	bloomfilter "github.com/holiman/bloomfilter/v2"
 )
 

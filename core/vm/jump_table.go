@@ -17,7 +17,7 @@
 package vm
 
 import (
-	"github.com/fgeth/fgeth/params"
+	"github.com/ethereum/go-ethereum/params"
 )
 
 type (

@@ -25,19 +25,19 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/fgeth/fgeth"
-	"github.com/fgeth/fgeth/common"
-	"github.com/fgeth/fgeth/core/rawdb"
-	"github.com/fgeth/fgeth/core/state/snapshot"
-	"github.com/fgeth/fgeth/core/types"
-	"github.com/fgeth/fgeth/eth/protocols/eth"
-	"github.com/fgeth/fgeth/eth/protocols/snap"
-	"github.com/fgeth/fgeth/ethdb"
-	"github.com/fgeth/fgeth/event"
-	"github.com/fgeth/fgeth/log"
-	"github.com/fgeth/fgeth/metrics"
-	"github.com/fgeth/fgeth/params"
-	"github.com/fgeth/fgeth/trie"
+	"github.com/ethereum/go-ethereum"
+	"github.com/ethereum/go-ethereum/common"
+	"github.com/ethereum/go-ethereum/core/rawdb"
+	"github.com/ethereum/go-ethereum/core/state/snapshot"
+	"github.com/ethereum/go-ethereum/core/types"
+	"github.com/ethereum/go-ethereum/eth/protocols/eth"
+	"github.com/ethereum/go-ethereum/eth/protocols/snap"
+	"github.com/ethereum/go-ethereum/ethdb"
+	"github.com/ethereum/go-ethereum/event"
+	"github.com/ethereum/go-ethereum/log"
+	"github.com/ethereum/go-ethereum/metrics"
+	"github.com/ethereum/go-ethereum/params"
+	"github.com/ethereum/go-ethereum/trie"
 )
 
 var (
@@ -448,8 +448,8 @@ func (d *Downloader) syncWithPeer(p *peerConnection, hash common.Hash, td *big.I
 			d.mux.Post(DoneEvent{latest})
 		}
 	}()
-	if p.version < eth.ETH66 {
-		return fmt.Errorf("%w: advertized %d < required %d", errTooOld, p.version, eth.ETH66)
+	if p.version < eth.ETH65 {
+		return fmt.Errorf("%w: advertized %d < required %d", errTooOld, p.version, eth.ETH65)
 	}
 	mode := d.getMode()
 

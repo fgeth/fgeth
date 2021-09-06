@@ -28,10 +28,10 @@ import (
 	"testing"
 	"time"
 
-	"github.com/fgeth/fgeth/accounts"
-	"github.com/fgeth/fgeth/common"
-	"github.com/fgeth/fgeth/crypto"
-	"github.com/fgeth/fgeth/event"
+	"github.com/ethereum/go-ethereum/accounts"
+	"github.com/ethereum/go-ethereum/common"
+	"github.com/ethereum/go-ethereum/crypto"
+	"github.com/ethereum/go-ethereum/event"
 )
 
 var testSigData = make([]byte, 32)

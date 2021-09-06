@@ -26,7 +26,7 @@ import (
 	"sync"
 	"unicode"
 
-	"github.com/fgeth/fgeth/log"
+	"github.com/ethereum/go-ethereum/log"
 )
 
 var (

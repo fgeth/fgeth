@@ -24,20 +24,20 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/fgeth/fgeth/common"
-	"github.com/fgeth/fgeth/core"
-	"github.com/fgeth/fgeth/core/forkid"
-	"github.com/fgeth/fgeth/core/types"
-	"github.com/fgeth/fgeth/eth/downloader"
-	"github.com/fgeth/fgeth/eth/fetcher"
-	"github.com/fgeth/fgeth/eth/protocols/eth"
-	"github.com/fgeth/fgeth/eth/protocols/snap"
-	"github.com/fgeth/fgeth/ethdb"
-	"github.com/fgeth/fgeth/event"
-	"github.com/fgeth/fgeth/log"
-	"github.com/fgeth/fgeth/p2p"
-	"github.com/fgeth/fgeth/params"
-	"github.com/fgeth/fgeth/trie"
+	"github.com/ethereum/go-ethereum/common"
+	"github.com/ethereum/go-ethereum/core"
+	"github.com/ethereum/go-ethereum/core/forkid"
+	"github.com/ethereum/go-ethereum/core/types"
+	"github.com/ethereum/go-ethereum/eth/downloader"
+	"github.com/ethereum/go-ethereum/eth/fetcher"
+	"github.com/ethereum/go-ethereum/eth/protocols/eth"
+	"github.com/ethereum/go-ethereum/eth/protocols/snap"
+	"github.com/ethereum/go-ethereum/ethdb"
+	"github.com/ethereum/go-ethereum/event"
+	"github.com/ethereum/go-ethereum/log"
+	"github.com/ethereum/go-ethereum/p2p"
+	"github.com/ethereum/go-ethereum/params"
+	"github.com/ethereum/go-ethereum/trie"
 )
 
 const (
@@ -117,6 +117,7 @@ type handler struct {
 	whitelist map[uint64]common.Hash
 
 	// channels for fetcher, syncer, txsyncLoop
+	txsyncCh chan *txsync
 	quitSync chan struct{}
 
 	chainSync *chainSyncer
@@ -139,6 +140,7 @@ func newHandler(config *handlerConfig) (*handler, error) {
 		chain:      config.Chain,
 		peers:      newPeerSet(),
 		whitelist:  config.Whitelist,
+		txsyncCh:   make(chan *txsync),
 		quitSync:   make(chan struct{}),
 	}
 	if config.Sync == downloader.FullSync {
@@ -406,8 +408,9 @@ func (h *handler) Start(maxPeers int) {
 	go h.minedBroadcastLoop()
 
 	// start sync handlers
-	h.wg.Add(1)
+	h.wg.Add(2)
 	go h.chainSync.loop()
+	go h.txsyncLoop64() // TODO(karalabe): Legacy initial tx echange, drop with eth/64.
 }
 
 func (h *handler) Stop() {

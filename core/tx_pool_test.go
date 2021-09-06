@@ -27,14 +27,14 @@ import (
 	"testing"
 	"time"
 
-	"github.com/fgeth/fgeth/common"
-	"github.com/fgeth/fgeth/core/rawdb"
-	"github.com/fgeth/fgeth/core/state"
-	"github.com/fgeth/fgeth/core/types"
-	"github.com/fgeth/fgeth/crypto"
-	"github.com/fgeth/fgeth/event"
-	"github.com/fgeth/fgeth/params"
-	"github.com/fgeth/fgeth/trie"
+	"github.com/ethereum/go-ethereum/common"
+	"github.com/ethereum/go-ethereum/core/rawdb"
+	"github.com/ethereum/go-ethereum/core/state"
+	"github.com/ethereum/go-ethereum/core/types"
+	"github.com/ethereum/go-ethereum/crypto"
+	"github.com/ethereum/go-ethereum/event"
+	"github.com/ethereum/go-ethereum/params"
+	"github.com/ethereum/go-ethereum/trie"
 )
 
 var (
@@ -1946,20 +1946,20 @@ func TestDualHeapEviction(t *testing.T) {
 	}
 
 	add := func(urgent bool) {
-		for i := 0; i < 20; i++ {
-			var tx *types.Transaction
+		txs := make([]*types.Transaction, 20)
+		for i := range txs {
 			// Create a test accounts and fund it
 			key, _ := crypto.GenerateKey()
 			testAddBalance(pool, crypto.PubkeyToAddress(key.PublicKey), big.NewInt(1000000000000))
 			if urgent {
-				tx = dynamicFeeTx(0, 100000, big.NewInt(int64(baseFee+1+i)), big.NewInt(int64(1+i)), key)
-				highTip = tx
+				txs[i] = dynamicFeeTx(0, 100000, big.NewInt(int64(baseFee+1+i)), big.NewInt(int64(1+i)), key)
+				highTip = txs[i]
 			} else {
-				tx = dynamicFeeTx(0, 100000, big.NewInt(int64(baseFee+200+i)), big.NewInt(1), key)
-				highCap = tx
+				txs[i] = dynamicFeeTx(0, 100000, big.NewInt(int64(baseFee+200+i)), big.NewInt(1), key)
+				highCap = txs[i]
 			}
-			pool.AddRemotesSync([]*types.Transaction{tx})
 		}
+		pool.AddRemotes(txs)
 		pending, queued := pool.Stats()
 		if pending+queued != 20 {
 			t.Fatalf("transaction count mismatch: have %d, want %d", pending+queued, 10)

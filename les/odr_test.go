@@ -26,17 +26,17 @@ import (
 	"testing"
 	"time"
 
-	"github.com/fgeth/fgeth/common"
-	"github.com/fgeth/fgeth/common/math"
-	"github.com/fgeth/fgeth/core"
-	"github.com/fgeth/fgeth/core/rawdb"
-	"github.com/fgeth/fgeth/core/state"
-	"github.com/fgeth/fgeth/core/types"
-	"github.com/fgeth/fgeth/core/vm"
-	"github.com/fgeth/fgeth/ethdb"
-	"github.com/fgeth/fgeth/light"
-	"github.com/fgeth/fgeth/params"
-	"github.com/fgeth/fgeth/rlp"
+	"github.com/ethereum/go-ethereum/common"
+	"github.com/ethereum/go-ethereum/common/math"
+	"github.com/ethereum/go-ethereum/core"
+	"github.com/ethereum/go-ethereum/core/rawdb"
+	"github.com/ethereum/go-ethereum/core/state"
+	"github.com/ethereum/go-ethereum/core/types"
+	"github.com/ethereum/go-ethereum/core/vm"
+	"github.com/ethereum/go-ethereum/ethdb"
+	"github.com/ethereum/go-ethereum/light"
+	"github.com/ethereum/go-ethereum/params"
+	"github.com/ethereum/go-ethereum/rlp"
 )
 
 type odrTestFn func(ctx context.Context, db ethdb.Database, config *params.ChainConfig, bc *core.BlockChain, lc *light.LightChain, bhash common.Hash) []byte
@@ -401,9 +401,9 @@ func testGetTxStatusFromUnindexedPeers(t *testing.T, protocol int) {
 			closeFns = append(closeFns, closePeer)
 
 			// Create a one-time routine for serving message
-			go func(i int, peer *testPeer, lookup uint64) {
-				serveMsg(peer, lookup)
-			}(i, peer, testspec.txLookups[i])
+			go func(i int, peer *testPeer) {
+				serveMsg(peer, testspec.txLookups[i])
+			}(i, peer)
 		}
 
 		// Send out the GetTxStatus requests, compare the result with

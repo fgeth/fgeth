@@ -21,15 +21,15 @@ import (
 	"math/big"
 	"time"
 
-	"github.com/fgeth/fgeth/common"
-	"github.com/fgeth/fgeth/core"
-	"github.com/fgeth/fgeth/core/types"
-	"github.com/fgeth/fgeth/metrics"
-	"github.com/fgeth/fgeth/p2p"
-	"github.com/fgeth/fgeth/p2p/enode"
-	"github.com/fgeth/fgeth/p2p/enr"
-	"github.com/fgeth/fgeth/params"
-	"github.com/fgeth/fgeth/trie"
+	"github.com/ethereum/go-ethereum/common"
+	"github.com/ethereum/go-ethereum/core"
+	"github.com/ethereum/go-ethereum/core/types"
+	"github.com/ethereum/go-ethereum/metrics"
+	"github.com/ethereum/go-ethereum/p2p"
+	"github.com/ethereum/go-ethereum/p2p/enode"
+	"github.com/ethereum/go-ethereum/p2p/enr"
+	"github.com/ethereum/go-ethereum/params"
+	"github.com/ethereum/go-ethereum/trie"
 )
 
 const (
@@ -171,21 +171,39 @@ type Decoder interface {
 	Time() time.Time
 }
 
+var eth65 = map[uint64]msgHandler{
+	GetBlockHeadersMsg:            handleGetBlockHeaders,
+	BlockHeadersMsg:               handleBlockHeaders,
+	GetBlockBodiesMsg:             handleGetBlockBodies,
+	BlockBodiesMsg:                handleBlockBodies,
+	GetNodeDataMsg:                handleGetNodeData,
+	NodeDataMsg:                   handleNodeData,
+	GetReceiptsMsg:                handleGetReceipts,
+	ReceiptsMsg:                   handleReceipts,
+	NewBlockHashesMsg:             handleNewBlockhashes,
+	NewBlockMsg:                   handleNewBlock,
+	TransactionsMsg:               handleTransactions,
+	NewPooledTransactionHashesMsg: handleNewPooledTransactionHashes,
+	GetPooledTransactionsMsg:      handleGetPooledTransactions,
+	PooledTransactionsMsg:         handlePooledTransactions,
+}
+
 var eth66 = map[uint64]msgHandler{
 	NewBlockHashesMsg:             handleNewBlockhashes,
 	NewBlockMsg:                   handleNewBlock,
 	TransactionsMsg:               handleTransactions,
 	NewPooledTransactionHashesMsg: handleNewPooledTransactionHashes,
-	GetBlockHeadersMsg:            handleGetBlockHeaders66,
-	BlockHeadersMsg:               handleBlockHeaders66,
-	GetBlockBodiesMsg:             handleGetBlockBodies66,
-	BlockBodiesMsg:                handleBlockBodies66,
-	GetNodeDataMsg:                handleGetNodeData66,
-	NodeDataMsg:                   handleNodeData66,
-	GetReceiptsMsg:                handleGetReceipts66,
-	ReceiptsMsg:                   handleReceipts66,
-	GetPooledTransactionsMsg:      handleGetPooledTransactions66,
-	PooledTransactionsMsg:         handlePooledTransactions66,
+	// eth66 messages with request-id
+	GetBlockHeadersMsg:       handleGetBlockHeaders66,
+	BlockHeadersMsg:          handleBlockHeaders66,
+	GetBlockBodiesMsg:        handleGetBlockBodies66,
+	BlockBodiesMsg:           handleBlockBodies66,
+	GetNodeDataMsg:           handleGetNodeData66,
+	NodeDataMsg:              handleNodeData66,
+	GetReceiptsMsg:           handleGetReceipts66,
+	ReceiptsMsg:              handleReceipts66,
+	GetPooledTransactionsMsg: handleGetPooledTransactions66,
+	PooledTransactionsMsg:    handlePooledTransactions66,
 }
 
 // handleMessage is invoked whenever an inbound message is received from a remote
@@ -201,11 +219,10 @@ func handleMessage(backend Backend, peer *Peer) error {
 	}
 	defer msg.Discard()
 
-	var handlers = eth66
-	//if peer.Version() >= ETH67 { // Left in as a sample when new protocol is added
-	//	handlers = eth67
-	//}
-
+	var handlers = eth65
+	if peer.Version() >= ETH66 {
+		handlers = eth66
+	}
 	// Track the amount of time it takes to serve the request and run the handler
 	if metrics.Enabled {
 		h := fmt.Sprintf("%s/%s/%d/%#02x", p2p.HandleHistName, ProtocolName, peer.Version(), msg.Code)

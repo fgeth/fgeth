@@ -24,15 +24,15 @@ import (
 	"sort"
 	"time"
 
-	"github.com/fgeth/fgeth/common"
-	"github.com/fgeth/fgeth/core/rawdb"
-	"github.com/fgeth/fgeth/core/state/snapshot"
-	"github.com/fgeth/fgeth/core/types"
-	"github.com/fgeth/fgeth/crypto"
-	"github.com/fgeth/fgeth/log"
-	"github.com/fgeth/fgeth/metrics"
-	"github.com/fgeth/fgeth/rlp"
-	"github.com/fgeth/fgeth/trie"
+	"github.com/ethereum/go-ethereum/common"
+	"github.com/ethereum/go-ethereum/core/rawdb"
+	"github.com/ethereum/go-ethereum/core/state/snapshot"
+	"github.com/ethereum/go-ethereum/core/types"
+	"github.com/ethereum/go-ethereum/crypto"
+	"github.com/ethereum/go-ethereum/log"
+	"github.com/ethereum/go-ethereum/metrics"
+	"github.com/ethereum/go-ethereum/rlp"
+	"github.com/ethereum/go-ethereum/trie"
 )
 
 type revision struct {
@@ -117,11 +117,6 @@ type StateDB struct {
 	SnapshotAccountReads time.Duration
 	SnapshotStorageReads time.Duration
 	SnapshotCommits      time.Duration
-
-	AccountUpdated int
-	StorageUpdated int
-	AccountDeleted int
-	StorageDeleted int
 }
 
 // New creates a new state from a given trie.
@@ -666,7 +661,7 @@ func (s *StateDB) Copy() *StateDB {
 	}
 	// Copy the dirty states, logs, and preimages
 	for addr := range s.journal.dirties {
-		// As documented [here](https://github.com/fgeth/fgeth/pull/16485#issuecomment-380438527),
+		// As documented [here](https://github.com/ethereum/go-ethereum/pull/16485#issuecomment-380438527),
 		// and in the Finalise-method, there is a case where an object is in the journal but not
 		// in the stateObjects: OOG after touch on ripeMD prior to Byzantium. Thus, we need to check for
 		// nil
@@ -865,10 +860,8 @@ func (s *StateDB) IntermediateRoot(deleteEmptyObjects bool) common.Hash {
 	for addr := range s.stateObjectsPending {
 		if obj := s.stateObjects[addr]; obj.deleted {
 			s.deleteStateObject(obj)
-			s.AccountDeleted += 1
 		} else {
 			s.updateStateObject(obj)
-			s.AccountUpdated += 1
 		}
 		usedAddrs = append(usedAddrs, common.CopyBytes(addr[:])) // Copy needed for closure
 	}
@@ -910,7 +903,6 @@ func (s *StateDB) Commit(deleteEmptyObjects bool) (common.Hash, error) {
 	s.IntermediateRoot(deleteEmptyObjects)
 
 	// Commit objects to the trie, measuring the elapsed time
-	var storageCommitted int
 	codeWriter := s.db.TrieDB().DiskDB().NewBatch()
 	for addr := range s.stateObjectsDirty {
 		if obj := s.stateObjects[addr]; !obj.deleted {
@@ -920,11 +912,9 @@ func (s *StateDB) Commit(deleteEmptyObjects bool) (common.Hash, error) {
 				obj.dirtyCode = false
 			}
 			// Write any storage changes in the state object to its storage trie
-			committed, err := obj.CommitTrie(s.db)
-			if err != nil {
+			if err := obj.CommitTrie(s.db); err != nil {
 				return common.Hash{}, err
 			}
-			storageCommitted += committed
 		}
 	}
 	if len(s.stateObjectsDirty) > 0 {
@@ -943,7 +933,7 @@ func (s *StateDB) Commit(deleteEmptyObjects bool) (common.Hash, error) {
 	// The onleaf func is called _serially_, so we can reuse the same account
 	// for unmarshalling every time.
 	var account Account
-	root, accountCommitted, err := s.trie.Commit(func(_ [][]byte, _ []byte, leaf []byte, parent common.Hash) error {
+	root, err := s.trie.Commit(func(_ [][]byte, _ []byte, leaf []byte, parent common.Hash) error {
 		if err := rlp.DecodeBytes(leaf, &account); err != nil {
 			return nil
 		}
@@ -952,20 +942,8 @@ func (s *StateDB) Commit(deleteEmptyObjects bool) (common.Hash, error) {
 		}
 		return nil
 	})
-	if err != nil {
-		return common.Hash{}, err
-	}
 	if metrics.EnabledExpensive {
 		s.AccountCommits += time.Since(start)
-
-		accountUpdatedMeter.Mark(int64(s.AccountUpdated))
-		storageUpdatedMeter.Mark(int64(s.StorageUpdated))
-		accountDeletedMeter.Mark(int64(s.AccountDeleted))
-		storageDeletedMeter.Mark(int64(s.StorageDeleted))
-		accountCommittedMeter.Mark(int64(accountCommitted))
-		storageCommittedMeter.Mark(int64(storageCommitted))
-		s.AccountUpdated, s.AccountDeleted = 0, 0
-		s.StorageUpdated, s.StorageDeleted = 0, 0
 	}
 	// If snapshotting is enabled, update the snapshot tree with this new version
 	if s.snap != nil {

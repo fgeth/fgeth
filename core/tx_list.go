@@ -23,8 +23,8 @@ import (
 	"sort"
 	"time"
 
-	"github.com/fgeth/fgeth/common"
-	"github.com/fgeth/fgeth/core/types"
+	"github.com/ethereum/go-ethereum/common"
+	"github.com/ethereum/go-ethereum/core/types"
 )
 
 // nonceHeap is a heap.Interface implementation over 64bit unsigned integers for

@@ -13,8 +13,8 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/fgeth/fgeth/log"
-	"github.com/fgeth/fgeth/metrics"
+	"github.com/ethereum/go-ethereum/log"
+	"github.com/ethereum/go-ethereum/metrics"
 	influxdb2 "github.com/influxdata/influxdb-client-go/v2"
 	"github.com/influxdata/influxdb-client-go/v2/api"
 )

@@ -34,10 +34,10 @@ import (
 	"unsafe"
 
 	"github.com/edsrzf/mmap-go"
-	"github.com/fgeth/fgeth/consensus"
-	"github.com/fgeth/fgeth/log"
-	"github.com/fgeth/fgeth/metrics"
-	"github.com/fgeth/fgeth/rpc"
+	"github.com/ethereum/go-ethereum/consensus"
+	"github.com/ethereum/go-ethereum/log"
+	"github.com/ethereum/go-ethereum/metrics"
+	"github.com/ethereum/go-ethereum/rpc"
 	"github.com/hashicorp/golang-lru/simplelru"
 )
 

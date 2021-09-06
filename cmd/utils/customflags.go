@@ -26,7 +26,7 @@ import (
 	"path"
 	"strings"
 
-	"github.com/fgeth/fgeth/common/math"
+	"github.com/ethereum/go-ethereum/common/math"
 	"gopkg.in/urfave/cli.v1"
 )
 
@@ -45,7 +45,7 @@ func (s *DirectoryString) Set(value string) error {
 }
 
 // Custom cli.Flag type which expand the received string to an absolute path.
-// e.g. ~/.fgethereum -> /home/username/.fgethereum
+// e.g. ~/.ethereum -> /home/username/.ethereum
 type DirectoryFlag struct {
 	Name   string
 	Value  DirectoryString

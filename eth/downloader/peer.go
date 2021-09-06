@@ -27,11 +27,11 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/fgeth/fgeth/common"
-	"github.com/fgeth/fgeth/eth/protocols/eth"
-	"github.com/fgeth/fgeth/event"
-	"github.com/fgeth/fgeth/log"
-	"github.com/fgeth/fgeth/p2p/msgrate"
+	"github.com/ethereum/go-ethereum/common"
+	"github.com/ethereum/go-ethereum/eth/protocols/eth"
+	"github.com/ethereum/go-ethereum/event"
+	"github.com/ethereum/go-ethereum/log"
+	"github.com/ethereum/go-ethereum/p2p/msgrate"
 )
 
 const (
@@ -413,7 +413,7 @@ func (ps *peerSet) HeaderIdlePeers() ([]*peerConnection, int) {
 	throughput := func(p *peerConnection) int {
 		return p.rates.Capacity(eth.BlockHeadersMsg, time.Second)
 	}
-	return ps.idlePeers(eth.ETH66, eth.ETH66, idle, throughput)
+	return ps.idlePeers(eth.ETH65, eth.ETH66, idle, throughput)
 }
 
 // BodyIdlePeers retrieves a flat list of all the currently body-idle peers within
@@ -425,7 +425,7 @@ func (ps *peerSet) BodyIdlePeers() ([]*peerConnection, int) {
 	throughput := func(p *peerConnection) int {
 		return p.rates.Capacity(eth.BlockBodiesMsg, time.Second)
 	}
-	return ps.idlePeers(eth.ETH66, eth.ETH66, idle, throughput)
+	return ps.idlePeers(eth.ETH65, eth.ETH66, idle, throughput)
 }
 
 // ReceiptIdlePeers retrieves a flat list of all the currently receipt-idle peers
@@ -437,7 +437,7 @@ func (ps *peerSet) ReceiptIdlePeers() ([]*peerConnection, int) {
 	throughput := func(p *peerConnection) int {
 		return p.rates.Capacity(eth.ReceiptsMsg, time.Second)
 	}
-	return ps.idlePeers(eth.ETH66, eth.ETH66, idle, throughput)
+	return ps.idlePeers(eth.ETH65, eth.ETH66, idle, throughput)
 }
 
 // NodeDataIdlePeers retrieves a flat list of all the currently node-data-idle
@@ -449,7 +449,7 @@ func (ps *peerSet) NodeDataIdlePeers() ([]*peerConnection, int) {
 	throughput := func(p *peerConnection) int {
 		return p.rates.Capacity(eth.NodeDataMsg, time.Second)
 	}
-	return ps.idlePeers(eth.ETH66, eth.ETH66, idle, throughput)
+	return ps.idlePeers(eth.ETH65, eth.ETH66, idle, throughput)
 }
 
 // idlePeers retrieves a flat list of all currently idle peers satisfying the

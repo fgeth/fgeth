@@ -21,8 +21,8 @@ import (
 	"sync"
 	"time"
 
-	"github.com/fgeth/fgeth/common/mclock"
-	"github.com/fgeth/fgeth/les/utils"
+	"github.com/ethereum/go-ethereum/common/mclock"
+	"github.com/ethereum/go-ethereum/les/utils"
 )
 
 // requestDistributor implements a mechanism that distributes requests to

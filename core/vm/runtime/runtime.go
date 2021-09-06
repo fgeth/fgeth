@@ -21,12 +21,12 @@ import (
 	"math/big"
 	"time"
 
-	"github.com/fgeth/fgeth/common"
-	"github.com/fgeth/fgeth/core/rawdb"
-	"github.com/fgeth/fgeth/core/state"
-	"github.com/fgeth/fgeth/core/vm"
-	"github.com/fgeth/fgeth/crypto"
-	"github.com/fgeth/fgeth/params"
+	"github.com/ethereum/go-ethereum/common"
+	"github.com/ethereum/go-ethereum/core/rawdb"
+	"github.com/ethereum/go-ethereum/core/state"
+	"github.com/ethereum/go-ethereum/core/vm"
+	"github.com/ethereum/go-ethereum/crypto"
+	"github.com/ethereum/go-ethereum/params"
 )
 
 // Config is a basic type specifying certain configuration flags for running
@@ -53,15 +53,15 @@ type Config struct {
 func setDefaults(cfg *Config) {
 	if cfg.ChainConfig == nil {
 		cfg.ChainConfig = &params.ChainConfig{
-			ChainID:             big.NewInt(3030),
-			HomesteadBlock:      big.NewInt(0),
+			ChainID:             big.NewInt(1),
+			HomesteadBlock:      new(big.Int),
 			DAOForkBlock:        new(big.Int),
 			DAOForkSupport:      false,
-			EIP150Block:         big.NewInt(0),
+			EIP150Block:         new(big.Int),
 			EIP150Hash:          common.Hash{},
-			EIP155Block:         big.NewInt(0),
-			EIP158Block:         big.NewInt(0),
-			ByzantiumBlock:      big.NewInt(0),
+			EIP155Block:         new(big.Int),
+			EIP158Block:         new(big.Int),
+			ByzantiumBlock:      new(big.Int),
 			ConstantinopleBlock: new(big.Int),
 			PetersburgBlock:     new(big.Int),
 			IstanbulBlock:       new(big.Int),
@@ -72,7 +72,7 @@ func setDefaults(cfg *Config) {
 	}
 
 	if cfg.Difficulty == nil {
-		cfg.Difficulty = big.NewInt(0x0400)
+		cfg.Difficulty = new(big.Int)
 	}
 	if cfg.Time == nil {
 		cfg.Time = big.NewInt(time.Now().Unix())

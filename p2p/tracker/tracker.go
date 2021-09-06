@@ -22,8 +22,8 @@ import (
 	"sync"
 	"time"
 
-	"github.com/fgeth/fgeth/log"
-	"github.com/fgeth/fgeth/metrics"
+	"github.com/ethereum/go-ethereum/log"
+	"github.com/ethereum/go-ethereum/metrics"
 )
 
 const (

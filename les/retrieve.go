@@ -22,7 +22,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/fgeth/fgeth/light"
+	"github.com/ethereum/go-ethereum/light"
 )
 
 var (

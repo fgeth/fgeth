@@ -29,27 +29,27 @@ import (
 	"testing"
 	"time"
 
-	"github.com/fgeth/fgeth/accounts/abi/bind"
-	"github.com/fgeth/fgeth/accounts/abi/bind/backends"
-	"github.com/fgeth/fgeth/common"
-	"github.com/fgeth/fgeth/common/mclock"
-	"github.com/fgeth/fgeth/consensus/ethash"
-	"github.com/fgeth/fgeth/contracts/checkpointoracle/contract"
-	"github.com/fgeth/fgeth/core"
-	"github.com/fgeth/fgeth/core/forkid"
-	"github.com/fgeth/fgeth/core/rawdb"
-	"github.com/fgeth/fgeth/core/types"
-	"github.com/fgeth/fgeth/crypto"
-	"github.com/fgeth/fgeth/eth/ethconfig"
-	"github.com/fgeth/fgeth/ethdb"
-	"github.com/fgeth/fgeth/event"
-	"github.com/fgeth/fgeth/les/checkpointoracle"
-	"github.com/fgeth/fgeth/les/flowcontrol"
-	vfs "github.com/fgeth/fgeth/les/vflux/server"
-	"github.com/fgeth/fgeth/light"
-	"github.com/fgeth/fgeth/p2p"
-	"github.com/fgeth/fgeth/p2p/enode"
-	"github.com/fgeth/fgeth/params"
+	"github.com/ethereum/go-ethereum/accounts/abi/bind"
+	"github.com/ethereum/go-ethereum/accounts/abi/bind/backends"
+	"github.com/ethereum/go-ethereum/common"
+	"github.com/ethereum/go-ethereum/common/mclock"
+	"github.com/ethereum/go-ethereum/consensus/ethash"
+	"github.com/ethereum/go-ethereum/contracts/checkpointoracle/contract"
+	"github.com/ethereum/go-ethereum/core"
+	"github.com/ethereum/go-ethereum/core/forkid"
+	"github.com/ethereum/go-ethereum/core/rawdb"
+	"github.com/ethereum/go-ethereum/core/types"
+	"github.com/ethereum/go-ethereum/crypto"
+	"github.com/ethereum/go-ethereum/eth/ethconfig"
+	"github.com/ethereum/go-ethereum/ethdb"
+	"github.com/ethereum/go-ethereum/event"
+	"github.com/ethereum/go-ethereum/les/checkpointoracle"
+	"github.com/ethereum/go-ethereum/les/flowcontrol"
+	vfs "github.com/ethereum/go-ethereum/les/vflux/server"
+	"github.com/ethereum/go-ethereum/light"
+	"github.com/ethereum/go-ethereum/p2p"
+	"github.com/ethereum/go-ethereum/p2p/enode"
+	"github.com/ethereum/go-ethereum/params"
 )
 
 var (
@@ -398,7 +398,7 @@ func (p *testPeer) close() {
 	p.app.Close()
 }
 
-func newTestPeerPair(name string, version int, server *serverHandler, client *clientHandler, noInitAnnounce bool) (*testPeer, *testPeer, error) {
+func newTestPeerPair(name string, version int, server *serverHandler, client *clientHandler) (*testPeer, *testPeer, error) {
 	// Create a message pipe to communicate through
 	app, net := p2p.MsgPipe()
 
@@ -423,16 +423,16 @@ func newTestPeerPair(name string, version int, server *serverHandler, client *cl
 		select {
 		case <-client.closeCh:
 			errc2 <- p2p.DiscQuitting
-		case errc2 <- client.handle(peer2, noInitAnnounce):
+		case errc2 <- client.handle(peer2):
 		}
 	}()
 	// Ensure the connection is established or exits when any error occurs
 	for {
 		select {
 		case err := <-errc1:
-			return nil, nil, fmt.Errorf("failed to establish protocol connection %v", err)
+			return nil, nil, fmt.Errorf("Failed to establish protocol connection %v", err)
 		case err := <-errc2:
-			return nil, nil, fmt.Errorf("failed to establish protocol connection %v", err)
+			return nil, nil, fmt.Errorf("Failed to establish protocol connection %v", err)
 		default:
 		}
 		if atomic.LoadUint32(&peer1.serving) == 1 && atomic.LoadUint32(&peer2.serving) == 1 {
@@ -473,7 +473,7 @@ func (client *testClient) newRawPeer(t *testing.T, name string, version int, rec
 		select {
 		case <-client.handler.closeCh:
 			errCh <- p2p.DiscQuitting
-		case errCh <- client.handler.handle(peer, false):
+		case errCh <- client.handler.handle(peer):
 		}
 	}()
 	tp := &testPeer{
@@ -623,7 +623,7 @@ func newClientServerEnv(t *testing.T, config testnetConfig) (*testServer, *testC
 	if config.connect {
 		done := make(chan struct{})
 		client.syncEnd = func(_ *types.Header) { close(done) }
-		cpeer, speer, err = newTestPeerPair("peer", config.protocol, server, client, false)
+		cpeer, speer, err = newTestPeerPair("peer", config.protocol, server, client)
 		if err != nil {
 			t.Fatalf("Failed to connect testing peers %v", err)
 		}

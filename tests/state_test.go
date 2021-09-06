@@ -23,7 +23,7 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/fgeth/fgeth/core/vm"
+	"github.com/ethereum/go-ethereum/core/vm"
 )
 
 func TestState(t *testing.T) {
@@ -42,7 +42,6 @@ func TestState(t *testing.T) {
 
 	// Very time consuming
 	st.skipLoad(`^stTimeConsuming/`)
-	st.skipLoad(`.*vmPerformance/loop.*`)
 
 	// Uses 1GB RAM per tested fork
 	st.skipLoad(`^stStaticCall/static_Call1MB`)

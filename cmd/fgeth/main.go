@@ -43,7 +43,7 @@ import (
 )
 
 const (
-	clientIdentifier = "geth" // Client identifier to advertise over the network
+	clientIdentifier = "fgeth" // Client identifier to advertise over the network
 )
 
 var (
@@ -203,7 +203,7 @@ var (
 
 func init() {
 	// Initialize the CLI app and start Geth
-	app.Action = geth
+	app.Action = fgeth
 	app.HideVersion = true // we have a command to print the version
 	app.Copyright = "Copyright 2013-2021 The go-ethereum Authors"
 	app.Commands = []cli.Command{
@@ -269,19 +269,19 @@ func prepare(ctx *cli.Context) {
 	// If we're running a known preset, log it for convenience.
 	switch {
 	case ctx.GlobalIsSet(utils.RopstenFlag.Name):
-		log.Info("Starting Geth on Ropsten testnet...")
+		log.Info("Starting fGeth on Ropsten testnet...")
 
 	case ctx.GlobalIsSet(utils.RinkebyFlag.Name):
-		log.Info("Starting Geth on Rinkeby testnet...")
+		log.Info("Starting fGeth on Rinkeby testnet...")
 
 	case ctx.GlobalIsSet(utils.GoerliFlag.Name):
-		log.Info("Starting Geth on Görli testnet...")
+		log.Info("Starting fGeth on Görli testnet...")
 
 	case ctx.GlobalIsSet(utils.DeveloperFlag.Name):
-		log.Info("Starting Geth in ephemeral dev mode...")
+		log.Info("Starting fGeth in ephemeral dev mode...")
 
 	case !ctx.GlobalIsSet(utils.NetworkIdFlag.Name):
-		log.Info("Starting Geth on Ethereum mainnet...")
+		log.Info("Starting FGeth on Ethereum mainnet...")
 	}
 	// If we're a full node on mainnet without --cache specified, bump default cache allowance
 	if ctx.GlobalString(utils.SyncModeFlag.Name) != "light" && !ctx.GlobalIsSet(utils.CacheFlag.Name) && !ctx.GlobalIsSet(utils.NetworkIdFlag.Name) {
@@ -308,7 +308,7 @@ func prepare(ctx *cli.Context) {
 // geth is the main entry point into the system if no special subcommand is ran.
 // It creates a default node based on the command line arguments and runs it in
 // blocking mode, waiting for it to be shut down.
-func geth(ctx *cli.Context) error {
+func fgeth(ctx *cli.Context) error {
 	if args := ctx.Args(); len(args) > 0 {
 		return fmt.Errorf("invalid command: %q", args[0])
 	}

@@ -11,14 +11,14 @@ RUN apk add --no-cache gcc musl-dev linux-headers git
 ADD . /go-ethereum
 RUN cd /go-ethereum && go run build/ci.go install ./cmd/geth
 
-# Pull Geth into a second stage deploy alpine container
+# Pull fGeth into a second stage deploy alpine container
 FROM alpine:latest
 
 RUN apk add --no-cache ca-certificates
 COPY --from=builder /go-ethereum/build/bin/geth /usr/local/bin/
 
-EXPOSE 8545 8546 30303 30303/udp
-ENTRYPOINT ["geth"]
+EXPOSE 8530 8531 30300 30300/udp
+ENTRYPOINT ["fgeth"]
 
 # Add some metadata labels to help programatic image consumption
 ARG COMMIT=""

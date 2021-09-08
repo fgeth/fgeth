@@ -83,7 +83,7 @@ func TestUpdateSmallNodes(t *testing.T) {
 		K string
 		V string
 	}{
-		{"63303030", "3041"}, // stacktrie.Update
+		{"63303000", "3041"}, // stacktrie.Update
 		{"65", "3000"},       // stacktrie.Update
 	}
 	for _, kv := range kvs {
@@ -111,7 +111,7 @@ func TestUpdateVariableKeys(t *testing.T) {
 		K string
 		V string
 	}{
-		{"0x33303534636532393561313031676174", "303030"},
+		{"0x33303534636532393561313031676174", "303000"},
 		{"0x3330353463653239356131303167617430", "313131"},
 	}
 	for _, kv := range kvs {

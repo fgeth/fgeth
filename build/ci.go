@@ -68,7 +68,7 @@ var (
 	// Files that end up in the geth*.zip archive.
 	gethArchiveFiles = []string{
 		"COPYING",
-		executablePath("geth"),
+		executablePath("fgeth"),
 	}
 
 	// Files that end up in the geth-alltools*.zip archive.
@@ -77,7 +77,7 @@ var (
 		executablePath("abigen"),
 		executablePath("bootnode"),
 		executablePath("evm"),
-		executablePath("geth"),
+		executablePath("fgeth"),
 		executablePath("puppeth"),
 		executablePath("rlpdump"),
 		executablePath("clef"),
@@ -98,7 +98,7 @@ var (
 			Description: "Developer utility version of the EVM (Ethereum Virtual Machine) that is capable of running bytecode snippets within a configurable environment and execution mode.",
 		},
 		{
-			BinaryName:  "geth",
+			BinaryName:  "fgeth",
 			Description: "Ethereum CLI client.",
 		},
 		{
@@ -368,17 +368,17 @@ func doArchive(cmdline []string) {
 	var (
 		env      = build.Env()
 		basegeth = archiveBasename(*arch, params.ArchiveVersion(env.Commit))
-		geth     = "geth-" + basegeth + ext
+		fgeth     = "fgeth-" + basegeth + ext
 		alltools = "geth-alltools-" + basegeth + ext
 	)
 	maybeSkipArchive(env)
-	if err := build.WriteArchive(geth, gethArchiveFiles); err != nil {
+	if err := build.WriteArchive(fgeth, gethArchiveFiles); err != nil {
 		log.Fatal(err)
 	}
 	if err := build.WriteArchive(alltools, allToolsArchiveFiles); err != nil {
 		log.Fatal(err)
 	}
-	for _, archive := range []string{geth, alltools} {
+	for _, archive := range []string{fgeth, alltools} {
 		if err := archiveUpload(archive, *upload, *signer, *signify); err != nil {
 			log.Fatal(err)
 		}
@@ -924,7 +924,7 @@ func doWindowsInstaller(cmdline []string) {
 			continue
 		}
 		allTools = append(allTools, filepath.Base(file))
-		if filepath.Base(file) == "geth.exe" {
+		if filepath.Base(file) == "fgeth.exe" {
 			gethTool = file
 		} else {
 			devTools = append(devTools, file)
@@ -1015,8 +1015,8 @@ func doAndroidArchive(cmdline []string) {
 	maybeSkipArchive(env)
 
 	// Sign and upload the archive to Azure
-	archive := "geth-" + archiveBasename("android", params.ArchiveVersion(env.Commit)) + ".aar"
-	os.Rename("geth.aar", archive)
+	archive := "fgeth-" + archiveBasename("android", params.ArchiveVersion(env.Commit)) + ".aar"
+	os.Rename("fgeth.aar", archive)
 
 	if err := archiveUpload(archive, *upload, *signer, *signify); err != nil {
 		log.Fatal(err)
@@ -1101,7 +1101,7 @@ func newMavenMetadata(env build.Environment) mavenMetadata {
 	}
 	return mavenMetadata{
 		Version:      version,
-		Package:      "geth-" + version,
+		Package:      "fgeth-" + version,
 		Develop:      isUnstableBuild(env),
 		Contributors: contribs,
 	}
@@ -1155,8 +1155,8 @@ func doXCodeFramework(cmdline []string) {
 	// Prepare and upload a PodSpec to CocoaPods
 	if *deploy != "" {
 		meta := newPodMetadata(env, archive)
-		build.Render("build/pod.podspec", "Geth.podspec", 0755, meta)
-		build.MustRunCommand("pod", *deploy, "push", "Geth.podspec", "--allow-warnings")
+		build.Render("build/pod.podspec", "fGeth.podspec", 0755, meta)
+		build.MustRunCommand("pod", *deploy, "push", "fGeth.podspec", "--allow-warnings")
 	}
 }
 

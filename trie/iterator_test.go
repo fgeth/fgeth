@@ -23,10 +23,10 @@ import (
 	"math/rand"
 	"testing"
 
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/crypto"
-	"github.com/ethereum/go-ethereum/ethdb"
-	"github.com/ethereum/go-ethereum/ethdb/memorydb"
+	"github.com/fgeth/fgeth/common"
+	"github.com/fgeth/fgeth/crypto"
+	"github.com/fgeth/fgeth/ethdb"
+	"github.com/fgeth/fgeth/ethdb/memorydb"
 )
 
 func TestIterator(t *testing.T) {

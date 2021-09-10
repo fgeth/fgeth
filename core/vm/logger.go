@@ -24,11 +24,11 @@ import (
 	"strings"
 	"time"
 
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/common/hexutil"
-	"github.com/ethereum/go-ethereum/common/math"
-	"github.com/ethereum/go-ethereum/core/types"
-	"github.com/ethereum/go-ethereum/params"
+	"github.com/fgeth/fgeth/common"
+	"github.com/fgeth/fgeth/common/hexutil"
+	"github.com/fgeth/fgeth/common/math"
+	"github.com/fgeth/fgeth/core/types"
+	"github.com/fgeth/fgeth/params"
 	"github.com/holiman/uint256"
 )
 

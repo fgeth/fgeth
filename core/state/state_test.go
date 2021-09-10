@@ -21,10 +21,10 @@ import (
 	"math/big"
 	"testing"
 
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/core/rawdb"
-	"github.com/ethereum/go-ethereum/crypto"
-	"github.com/ethereum/go-ethereum/ethdb"
+	"github.com/fgeth/fgeth/common"
+	"github.com/fgeth/fgeth/core/rawdb"
+	"github.com/fgeth/fgeth/crypto"
+	"github.com/fgeth/fgeth/ethdb"
 )
 
 type stateTest struct {

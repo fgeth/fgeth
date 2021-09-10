@@ -21,11 +21,11 @@ import (
 	"errors"
 	"math/big"
 
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/core"
-	"github.com/ethereum/go-ethereum/core/rawdb"
-	"github.com/ethereum/go-ethereum/core/types"
-	"github.com/ethereum/go-ethereum/ethdb"
+	"github.com/fgeth/fgeth/common"
+	"github.com/fgeth/fgeth/core"
+	"github.com/fgeth/fgeth/core/rawdb"
+	"github.com/fgeth/fgeth/core/types"
+	"github.com/fgeth/fgeth/ethdb"
 )
 
 // NoOdr is the default context passed to an ODR capable function when the ODR

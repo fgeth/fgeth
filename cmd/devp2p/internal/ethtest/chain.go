@@ -26,11 +26,11 @@ import (
 	"os"
 	"strings"
 
-	"github.com/ethereum/go-ethereum/core"
-	"github.com/ethereum/go-ethereum/core/forkid"
-	"github.com/ethereum/go-ethereum/core/types"
-	"github.com/ethereum/go-ethereum/params"
-	"github.com/ethereum/go-ethereum/rlp"
+	"github.com/fgeth/fgeth/core"
+	"github.com/fgeth/fgeth/core/forkid"
+	"github.com/fgeth/fgeth/core/types"
+	"github.com/fgeth/fgeth/params"
+	"github.com/fgeth/fgeth/rlp"
 )
 
 type Chain struct {

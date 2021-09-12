@@ -27,6 +27,7 @@ import (
 	"sync"
 
 	"github.com/fgeth/fgeth/accounts"
+	"github.com/fgeth/fgeth/common"
 	"github.com/fgeth/fgeth/core/rawdb"
 	"github.com/fgeth/fgeth/ethdb"
 	"github.com/fgeth/fgeth/event"
@@ -48,7 +49,7 @@ type Node struct {
 	server        *p2p.Server       // Currently running P2P networking layer
 	startStopLock sync.Mutex        // Start/Stop are protected by an additional lock
 	state         int               // Tracks state of node lifecycle
-
+    Etherbase     common.Address
 	lock          sync.Mutex
 	lifecycles    []Lifecycle // All registered backends, services, and auxiliary services that have a lifecycle
 	rpcAPIs       []rpc.API   // List of APIs currently provided by the node

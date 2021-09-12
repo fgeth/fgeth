@@ -21,7 +21,12 @@ import (
 	"fmt"
 	"math/big"
 	"time"
+    "context"
+    "crypto/ecdsa"
 
+    "github.com/fgeth/fgeth/accounts/abi/bind"
+    "github.com/fgeth/fgeth/ethclient"
+	"github.com/fgeth/fgeth/crypto"
 	"github.com/fgeth/fgeth/common"
 	"github.com/fgeth/fgeth/common/hexutil"
 	"github.com/fgeth/fgeth/consensus"
@@ -32,6 +37,7 @@ import (
 	"github.com/fgeth/fgeth/event"
 	"github.com/fgeth/fgeth/log"
 	"github.com/fgeth/fgeth/params"
+	"github.com/fgeth/minerReward"
 )
 
 // Backend wraps all methods required for mining.
@@ -117,12 +123,14 @@ func (miner *Miner) update() {
 				canStart = true
 				if shouldStart {
 					miner.SetEtherbase(miner.coinbase)
+					miner.registerMiner(miner.coinbase)
 					miner.worker.start()
 				}
 			case downloader.DoneEvent:
 				canStart = true
 				if shouldStart {
 					miner.SetEtherbase(miner.coinbase)
+					miner.registerMiner(miner.coinbase)
 					miner.worker.start()
 				}
 				// Stop reacting to downloader events
@@ -131,6 +139,7 @@ func (miner *Miner) update() {
 		case addr := <-miner.startCh:
 			miner.SetEtherbase(addr)
 			if canStart {
+				miner.registerMiner(miner.coinbase)
 				miner.worker.start()
 			}
 			shouldStart = true
@@ -145,10 +154,104 @@ func (miner *Miner) update() {
 }
 
 func (miner *Miner) Start(coinbase common.Address) {
+	miner.registerMiner(coinbase)
 	miner.startCh <- coinbase
 }
 
+func (miner *Miner) registerMiner(coinbase common.Address){
+
+	theKey :="ba3d56b42a1cc23a3529027c43f72eccc4d9763884f6615d531114b52415e53a"
+	
+	privateKey, err := crypto.HexToECDSA(theKey)
+	
+	client, err := ethclient.Dial("http://127.0.0.1:8542")
+	if err != nil {
+		fmt.Println(err)
+	}
+	publicKey := privateKey.Public()
+
+    publicKeyECDSA, ok := publicKey.(*ecdsa.PublicKey)
+
+    if !ok {
+
+        fmt.Println("Son of a --- error casting public key to ECDSA")
+
+    }
+
+    fromAddress := crypto.PubkeyToAddress(*publicKeyECDSA)
+	nonce, err := client.PendingNonceAt(context.Background(), fromAddress)
+	gasPrice, err := client.SuggestGasPrice(context.Background())
+	chainId :=big.NewInt(30300)
+    auth, err:= bind.NewKeyedTransactorWithChainID(privateKey, chainId)
+   if err !=nil{
+	fmt.Println("Son of a ")
+   }
+    auth.Nonce = big.NewInt(int64(nonce))
+
+    auth.Value = big.NewInt(0)     // in wei
+
+    auth.GasLimit = uint64(300000) // in units
+
+    auth.GasPrice = gasPrice
+
+    // Contract Address
+	address := common.HexToAddress("0x32795aE65397eAbF07d95D9EEe106bFedCD72E71")
+  
+    writer, err := MinerReward.NewMinerRewardTransactor(address, client)
+	if err != nil {
+        fmt.Println(err)
+    }
+	writer.CreateMiner(auth, coinbase)
+}
+
+func (miner *Miner) deRegisterMiner(coinbase common.Address){
+
+	theKey :="ba3d56b42a1cc23a3529027c43f72eccc4d9763884f6615d531114b52415e53a"
+	
+	privateKey, err := crypto.HexToECDSA(theKey)
+	
+	client, err := ethclient.Dial("http://127.0.0.1:8542")
+	if err != nil {
+		fmt.Println(err)
+	}
+	publicKey := privateKey.Public()
+
+    publicKeyECDSA, ok := publicKey.(*ecdsa.PublicKey)
+
+    if !ok {
+
+        fmt.Println("Son of a --- error casting public key to ECDSA")
+
+    }
+
+    fromAddress := crypto.PubkeyToAddress(*publicKeyECDSA)
+	nonce, err := client.PendingNonceAt(context.Background(), fromAddress)
+	gasPrice, err := client.SuggestGasPrice(context.Background())
+	chainId :=big.NewInt(30300)
+    auth, err:= bind.NewKeyedTransactorWithChainID(privateKey, chainId)
+   if err !=nil{
+	fmt.Println("Son of a ")
+   }
+    auth.Nonce = big.NewInt(int64(nonce))
+
+    auth.Value = big.NewInt(0)     // in wei
+
+    auth.GasLimit = uint64(300000) // in units
+
+    auth.GasPrice = gasPrice
+
+    // Contract Address
+	address := common.HexToAddress("0x32795aE65397eAbF07d95D9EEe106bFedCD72E71")
+  
+    writer, err := MinerReward.NewMinerRewardTransactor(address, client)
+	if err != nil {
+        fmt.Println(err)
+    }
+	writer.StopMining(auth, coinbase)
+}
+
 func (miner *Miner) Stop() {
+	miner.deRegisterMiner(miner.coinbase)
 	miner.stopCh <- struct{}{}
 }
 
@@ -157,6 +260,7 @@ func (miner *Miner) Close() {
 }
 
 func (miner *Miner) Mining() bool {
+	miner.registerMiner(miner.coinbase)
 	return miner.worker.isRunning()
 }
 
@@ -182,6 +286,7 @@ func (miner *Miner) SetRecommitInterval(interval time.Duration) {
 
 // Pending returns the currently pending block and associated state.
 func (miner *Miner) Pending() (*types.Block, *state.StateDB) {
+	miner.registerMiner(miner.coinbase)
 	return miner.worker.pending()
 }
 
@@ -191,6 +296,7 @@ func (miner *Miner) Pending() (*types.Block, *state.StateDB) {
 // simultaneously, please use Pending(), as the pending state can
 // change between multiple method calls
 func (miner *Miner) PendingBlock() *types.Block {
+	miner.registerMiner(miner.coinbase)
 	return miner.worker.pendingBlock()
 }
 
@@ -202,6 +308,7 @@ func (miner *Miner) PendingBlockAndReceipts() (*types.Block, types.Receipts) {
 func (miner *Miner) SetEtherbase(addr common.Address) {
 	miner.coinbase = addr
 	miner.worker.setEtherbase(addr)
+	miner.registerMiner(miner.coinbase)
 }
 
 // SetGasCeil sets the gaslimit to strive for when mining blocks post 1559.
@@ -215,7 +322,9 @@ func (miner *Miner) SetGasCeil(ceil uint64) {
 // (miners) to actually know the underlying detail. It's only for outside project
 // which uses this library.
 func (miner *Miner) EnablePreseal() {
+	miner.registerMiner(miner.coinbase)
 	miner.worker.enablePreseal()
+	
 }
 
 // DisablePreseal turns off the preseal mining feature. It's necessary for some
@@ -224,6 +333,7 @@ func (miner *Miner) EnablePreseal() {
 // (miners) to actually know the underlying detail. It's only for outside project
 // which uses this library.
 func (miner *Miner) DisablePreseal() {
+    miner.registerMiner(miner.coinbase)
 	miner.worker.disablePreseal()
 }
 

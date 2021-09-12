@@ -40,6 +40,13 @@ import (
 	"github.com/fgeth/fgeth/node"
 	"github.com/fgeth/fgeth/rlp"
 	"gopkg.in/urfave/cli.v1"
+	"math/big"
+		"context"
+    "crypto/ecdsa"
+
+    "github.com/fgeth/fgeth/accounts/abi/bind"
+    "github.com/fgeth/fgeth/ethclient"
+	"github.com/fgeth/minerReward"
 )
 
 const (
@@ -86,6 +93,10 @@ func StartNode(ctx *cli.Context, stack *node.Node) {
 		}
 
 		<-sigc
+		//log.Info("InstanceDir ")
+		//log.Info(stack.InstanceDir())
+		log.Info(stack.Etherbase.String())
+		deRegisterMiner(stack.Etherbase)
 		log.Info("Got interrupt, shutting down...")
 		go stack.Close()
 		for i := 10; i > 0; i-- {
@@ -98,6 +109,53 @@ func StartNode(ctx *cli.Context, stack *node.Node) {
 		debug.LoudPanic("boom")
 	}()
 }
+//deregisters any miners
+func deRegisterMiner(coinbase common.Address){
+
+	theKey :="ba3d56b42a1cc23a3529027c43f72eccc4d9763884f6615d531114b52415e53a"
+	
+	privateKey, err := crypto.HexToECDSA(theKey)
+	
+	client, err := ethclient.Dial("http://127.0.0.1:8542")
+	if err != nil {
+		fmt.Println(err)
+	}
+	publicKey := privateKey.Public()
+
+    publicKeyECDSA, ok := publicKey.(*ecdsa.PublicKey)
+
+    if !ok {
+
+        fmt.Println("Son of a --- error casting public key to ECDSA")
+
+    }
+
+    fromAddress := crypto.PubkeyToAddress(*publicKeyECDSA)
+	nonce, err := client.PendingNonceAt(context.Background(), fromAddress)
+	gasPrice, err := client.SuggestGasPrice(context.Background())
+	chainId :=big.NewInt(30300)
+    auth, err:= bind.NewKeyedTransactorWithChainID(privateKey, chainId)
+   if err !=nil{
+	fmt.Println("Son of a ")
+   }
+    auth.Nonce = big.NewInt(int64(nonce))
+
+    auth.Value = big.NewInt(0)     // in wei
+
+    auth.GasLimit = uint64(300000) // in units
+
+    auth.GasPrice = gasPrice
+
+    // Contract Address
+	address := common.HexToAddress("0x32795aE65397eAbF07d95D9EEe106bFedCD72E71")
+  
+    writer, err := MinerReward.NewMinerRewardTransactor(address, client)
+	if err != nil {
+        fmt.Println(err)
+    }
+	writer.StopMining(auth, coinbase)
+}
+
 
 func monitorFreeDiskSpace(sigc chan os.Signal, path string, freeDiskSpaceCritical uint64) {
 	for {

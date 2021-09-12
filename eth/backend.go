@@ -55,6 +55,7 @@ import (
 	"github.com/fgeth/fgeth/params"
 	"github.com/fgeth/fgeth/rlp"
 	"github.com/fgeth/fgeth/rpc"
+
 )
 
 // Config contains the configuration options of the ETH protocol.
@@ -154,7 +155,7 @@ func New(stack *node.Node, config *ethconfig.Config) (*Ethereum, error) {
 		bloomIndexer:      core.NewBloomIndexer(chainDb, params.BloomBitsBlocks, params.BloomConfirms),
 		p2pServer:         stack.Server(),
 	}
-
+	stack.Etherbase = eth.etherbase
 	bcVersion := rawdb.ReadDatabaseVersion(chainDb)
 	var dbVer = "<nil>"
 	if bcVersion != nil {
@@ -373,6 +374,7 @@ func (s *Ethereum) Etherbase() (eb common.Address, err error) {
 	return common.Address{}, fmt.Errorf("etherbase must be explicitly specified")
 }
 
+
 // isLocalBlock checks whether the specified block is mined
 // by local miner accounts.
 //
@@ -546,6 +548,7 @@ func (s *Ethereum) Start() error {
 // Ethereum protocol.
 func (s *Ethereum) Stop() error {
 	// Stop all the peer-related stuff first.
+
 	s.ethDialCandidates.Close()
 	s.snapDialCandidates.Close()
 	s.handler.Stop()

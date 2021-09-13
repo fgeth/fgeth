@@ -83,12 +83,7 @@ var (
 		CHTRoot:      common.HexToHash("0x2ccf3dbb58eb6375e037fdd981ca5778359e4b8fa0270c2878b14361e64161e7"),
 		BloomRoot:    common.HexToHash("0x2d46ec65a6941a2dc1e682f8f81f3d24192021f492fdf6ef0fdd51acb0f4ba0f"),
 	}
-	DevnetTrustedCheckpoint = &TrustedCheckpoint{
-		SectionIndex: 395,
-		SectionHead:  common.HexToHash("0xbfca95b8c1de014e252288e9c32029825fadbff58285f5b54556525e480dbb5b"),
-		CHTRoot:      common.HexToHash("0x2ccf3dbb58eb6375e037fdd981ca5778359e4b8fa0270c2878b14361e64161e7"),
-		BloomRoot:    common.HexToHash("0x2d46ec65a6941a2dc1e682f8f81f3d24192021f492fdf6ef0fdd51acb0f4ba0f"),
-	}
+	
 	// MainnetCheckpointOracle contains a set of configs for the main network oracle.
 	MainnetCheckpointOracle = &CheckpointOracleConfig{
 		Address: common.HexToAddress("0x533dbaef28d9ac53673238eb4c2d8556278f33ff"),
@@ -102,6 +97,30 @@ var (
 		Threshold: 2,
 	}
 	
+	DevnetChainConfig = &ChainConfig{
+		ChainID:             big.NewInt(30000),
+		HomesteadBlock:      big.NewInt(0),
+		DAOForkBlock:        big.NewInt(0),
+		DAOForkSupport:      true,
+		EIP150Block:         big.NewInt(0),
+		EIP150Hash:          common.HexToHash("0x0000000000000000000000000000000000000000000000000000000000000000"),
+		EIP155Block:         big.NewInt(0),
+		EIP158Block:         big.NewInt(0),
+		ByzantiumBlock:      big.NewInt(0),
+		ConstantinopleBlock: big.NewInt(0),
+		PetersburgBlock:     big.NewInt(0),
+		IstanbulBlock:       big.NewInt(0),
+		MuirGlacierBlock:    big.NewInt(0),
+		BerlinBlock:         big.NewInt(0),
+		LondonBlock:         big.NewInt(1000),
+		Ethash:              new(EthashConfig),
+	}
+	DevnetTrustedCheckpoint = &TrustedCheckpoint{
+		SectionIndex: 395,
+		SectionHead:  common.HexToHash("0xbfca95b8c1de014e252288e9c32029825fadbff58285f5b54556525e480dbb5b"),
+		CHTRoot:      common.HexToHash("0x2ccf3dbb58eb6375e037fdd981ca5778359e4b8fa0270c2878b14361e64161e7"),
+		BloomRoot:    common.HexToHash("0x2d46ec65a6941a2dc1e682f8f81f3d24192021f492fdf6ef0fdd51acb0f4ba0f"),
+	}
 	DevnetCheckpointOracle = &CheckpointOracleConfig{
 		Address: common.HexToAddress("0x533dbaef28d9ac53673238eb4c2d8556278f33ff"),
 		Signers: []common.Address{

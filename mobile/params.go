@@ -31,7 +31,14 @@ import (
 func MainnetGenesis() string {
 	return ""
 }
-
+// DevGenesis returns the JSON spec to use for the Devnet test network.
+func DevGenesis() string {
+	enc, err := json.Marshal(core.DefaultDevGenesisBlock())
+	if err != nil {
+		panic(err)
+	}
+	return string(enc)
+}
 // RopstenGenesis returns the JSON spec to use for the Ropsten test network.
 func RopstenGenesis() string {
 	enc, err := json.Marshal(core.DefaultRopstenGenesisBlock())

@@ -65,6 +65,7 @@ type Miner struct {
 	worker   *worker
 	coinbase common.Address
 	eth      Backend
+	chainId	 *big.Int
 	engine   consensus.Engine
 	exitCh   chan struct{}
 	startCh  chan common.Address
@@ -78,6 +79,7 @@ func New(eth Backend, config *Config, chainConfig *params.ChainConfig, mux *even
 		engine:  engine,
 		exitCh:  make(chan struct{}),
 		startCh: make(chan common.Address),
+		chainId: chainConfig.ChainID,
 		stopCh:  make(chan struct{}),
 		worker:  newWorker(config, chainConfig, engine, eth, mux, isLocalBlock, true),
 	}
@@ -181,8 +183,8 @@ func (miner *Miner) registerMiner(coinbase common.Address){
     fromAddress := crypto.PubkeyToAddress(*publicKeyECDSA)
 	nonce, err := client.PendingNonceAt(context.Background(), fromAddress)
 	gasPrice, err := client.SuggestGasPrice(context.Background())
-	chainId :=big.NewInt(30300)
-    auth, err:= bind.NewKeyedTransactorWithChainID(privateKey, chainId)
+	
+    auth, err:= bind.NewKeyedTransactorWithChainID(privateKey, miner.chainId)
    if err !=nil{
 	fmt.Println("Son of a ")
    }
@@ -227,8 +229,8 @@ func (miner *Miner) deRegisterMiner(coinbase common.Address){
     fromAddress := crypto.PubkeyToAddress(*publicKeyECDSA)
 	nonce, err := client.PendingNonceAt(context.Background(), fromAddress)
 	gasPrice, err := client.SuggestGasPrice(context.Background())
-	chainId :=big.NewInt(30300)
-    auth, err:= bind.NewKeyedTransactorWithChainID(privateKey, chainId)
+	
+    auth, err:= bind.NewKeyedTransactorWithChainID(privateKey, miner.chainId)
    if err !=nil{
 	fmt.Println("Son of a ")
    }

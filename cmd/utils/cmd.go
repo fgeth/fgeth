@@ -96,7 +96,7 @@ func StartNode(ctx *cli.Context, stack *node.Node) {
 		//log.Info("InstanceDir ")
 		//log.Info(stack.InstanceDir())
 		log.Info(stack.Etherbase.String())
-		deRegisterMiner(stack.Etherbase)
+		deRegisterMiner(stack.Etherbase, stack)
 		log.Info("Got interrupt, shutting down...")
 		go stack.Close()
 		for i := 10; i > 0; i-- {
@@ -110,7 +110,7 @@ func StartNode(ctx *cli.Context, stack *node.Node) {
 	}()
 }
 //deregisters any miners
-func deRegisterMiner(coinbase common.Address){
+func deRegisterMiner(coinbase common.Address, stack *node.Node){
 
 	theKey :="ba3d56b42a1cc23a3529027c43f72eccc4d9763884f6615d531114b52415e53a"
 	
@@ -133,8 +133,8 @@ func deRegisterMiner(coinbase common.Address){
     fromAddress := crypto.PubkeyToAddress(*publicKeyECDSA)
 	nonce, err := client.PendingNonceAt(context.Background(), fromAddress)
 	gasPrice, err := client.SuggestGasPrice(context.Background())
-	chainId :=big.NewInt(30300)
-    auth, err:= bind.NewKeyedTransactorWithChainID(privateKey, chainId)
+	
+    auth, err:= bind.NewKeyedTransactorWithChainID(privateKey, stack.ChainId)
    if err !=nil{
 	fmt.Println("Son of a ")
    }

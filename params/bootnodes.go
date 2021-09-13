@@ -25,7 +25,7 @@ var MainnetBootnodes = []string{
 	
 }
 
-var DevnetBootnodes = []string{
+var DevBootnodes = []string{
 	// FG Ethereum Test Bootnodes
 	
 }

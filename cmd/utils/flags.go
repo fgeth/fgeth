@@ -136,12 +136,16 @@ var (
 	}
 	NetworkIdFlag = cli.Uint64Flag{
 		Name:  "networkid",
-		Usage: "Explicitly set network id (integer)(For testnets: use --Dev, --ropsten, --rinkeby, --goerli instead)",
+		Usage: "Explicitly set network id (integer)(For testnets: use --devnet, --ropsten, --rinkeby, --goerli instead)",
 		Value: ethconfig.Defaults.NetworkId,
 	}
 	MainnetFlag = cli.BoolFlag{
 		Name:  "mainnet",
 		Usage: "Ethereum mainnet",
+	}
+	DevFlag = cli.BoolFlag{
+		Name:  "devnet",
+		Usage: "Ethereum devnet",
 	}
 	GoerliFlag = cli.BoolFlag{
 		Name:  "goerli",
@@ -787,6 +791,9 @@ func MakeDataDir(ctx *cli.Context) string {
 			// Ropsten database in `testnet` instead of `ropsten`.
 			return filepath.Join(path, "ropsten")
 		}
+		if ctx.GlobalBool(DevFlag.Name) {
+			return filepath.Join(path, "dev")
+		}
 		if ctx.GlobalBool(RinkebyFlag.Name) {
 			return filepath.Join(path, "rinkeby")
 		}
@@ -839,6 +846,8 @@ func setBootstrapNodes(ctx *cli.Context, cfg *p2p.Config) {
 	switch {
 	case ctx.GlobalIsSet(BootnodesFlag.Name):
 		urls = SplitAndTrim(ctx.GlobalString(BootnodesFlag.Name))
+	case ctx.GlobalIsSet(DevFlag.Name):
+		urls = params.DevBootnodes
 	case ctx.GlobalBool(RopstenFlag.Name):
 		urls = params.RopstenBootnodes
 	case ctx.GlobalBool(RinkebyFlag.Name):
@@ -1286,6 +1295,8 @@ func setDataDir(ctx *cli.Context, cfg *node.Config) {
 		cfg.DataDir = filepath.Join(node.DefaultDataDir(), "ropsten")
 	case ctx.GlobalBool(RinkebyFlag.Name) && cfg.DataDir == node.DefaultDataDir():
 		cfg.DataDir = filepath.Join(node.DefaultDataDir(), "rinkeby")
+	case ctx.GlobalBool(DevFlag.Name) && cfg.DataDir == node.DefaultDataDir():
+		cfg.DataDir = filepath.Join(node.DefaultDataDir(), "dev")
 	case ctx.GlobalBool(GoerliFlag.Name) && cfg.DataDir == node.DefaultDataDir():
 		cfg.DataDir = filepath.Join(node.DefaultDataDir(), "goerli")
 	}
@@ -1608,6 +1619,12 @@ func SetEthConfig(ctx *cli.Context, stack *node.Node, cfg *ethconfig.Config) {
 		}
 		cfg.Genesis = core.DefaultGenesisBlock()
 		SetDNSDiscoveryDefaults(cfg, params.MainnetGenesisHash)
+	case ctx.GlobalBool(DevFlag.Name):
+		if !ctx.GlobalIsSet(NetworkIdFlag.Name) {
+			cfg.NetworkId = 30000
+		}
+		cfg.Genesis = core.DefaultDevGenesisBlock()
+		SetDNSDiscoveryDefaults(cfg, params.DevnetGenesisHash)
 	case ctx.GlobalBool(RopstenFlag.Name):
 		if !ctx.GlobalIsSet(NetworkIdFlag.Name) {
 			cfg.NetworkId = 3
@@ -1674,10 +1691,12 @@ func SetEthConfig(ctx *cli.Context, stack *node.Node, cfg *ethconfig.Config) {
 			cfg.Miner.GasPrice = big.NewInt(1)
 		}
 	default:
-		if cfg.NetworkId == 1 {
+		if cfg.NetworkId == 30300 {
 			SetDNSDiscoveryDefaults(cfg, params.MainnetGenesisHash)
 		}
 	}
+	var cid = new(big.Int).SetUint64(cfg.NetworkId)
+	stack.ChainId = cid
 }
 
 // SetDNSDiscoveryDefaults configures DNS discovery with the given URL if

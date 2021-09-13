@@ -19,6 +19,7 @@ package node
 import (
 	"errors"
 	"fmt"
+	"math/big"
 	"net/http"
 	"os"
 	"path/filepath"
@@ -50,6 +51,7 @@ type Node struct {
 	startStopLock sync.Mutex        // Start/Stop are protected by an additional lock
 	state         int               // Tracks state of node lifecycle
     Etherbase     common.Address
+	ChainId       *big.Int
 	lock          sync.Mutex
 	lifecycles    []Lifecycle // All registered backends, services, and auxiliary services that have a lifecycle
 	rpcAPIs       []rpc.API   // List of APIs currently provided by the node

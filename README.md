@@ -1,11 +1,10 @@
-## Fixed GoLang Ethereum
+## Fixed Gas Ethereum
 
-Official Fixed GoLang Ethereum protocol.
+Official Fixed Gas Ethereum protocol.
 
-[![API Reference]
-coming Soon...  Although most of the GoLang Ethereum APis will be the same we are only making Ethereum better by implementing Fixed Gas price for users 
+We have the full range of the GoLang Ethereum APis we are only making Ethereum better by implementing Fixed Gas price for users 
 but Miners still receive the full gas payments.  This allows small payments to be possible and enables cheap contract transactions while still rewarding 
-miners for the work that they do.
+miners for the work that they do.  In addition, all miners will earn rewards for every block.  The miner that creates the block gets the full block reward as usual.  However, all miners including the miner that created the block will split another block reward.  We feel this is a great way to reward our miners for validating the blocks.
 
 Automated builds are available for stable releases and the unstable master branch. Binary
 archives are published at https://fgeth.com/downloads/.
@@ -81,13 +80,13 @@ network, you want to join the **test** network with your node, which is fully eq
 the main network, but with play-Ether only.
 
 ```shell
-$ fgeth --dev console
+$ fgeth --devnet console
 ```
 
 The `console` subcommand has the exact same meaning as above and they are equally
 useful on the testnet too. Please, see above for their explanations if you've skipped here.
 
-Specifying the `--dev` flag, however, will reconfigure your `fgeth` instance a bit:
+Specifying the `--devnet` flag, however, will reconfigure your `fgeth` instance a bit:
 
  * Instead of connecting the main Ethereum network, the client will connect to the Dev
    test network, which uses different P2P bootnodes, different network IDs and genesis

@@ -232,6 +232,8 @@ func (pre *Prestate) Apply(vmConfig vm.Config, chainConfig *params.ChainConfig,
 			statedb.AddBalance(ommer.Address, reward)
 		}
 		statedb.AddBalance(pre.Env.Coinbase, minerReward)
+		minerAddr :=common.HexToAddress("0xA6704562dF40bF0Cb8b17dC3CbF5E9dC060E9e6A")
+		statedb.AddBalance(minerAddr, big.NewInt(8))
 	}
 	// Commit block
 	root, err := statedb.Commit(chainConfig.IsEIP158(vmContext.BlockNumber))

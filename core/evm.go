@@ -117,6 +117,17 @@ func CanTransfer(db vm.StateDB, addr common.Address, amount *big.Int) bool {
 
 // Transfer subtracts amount from sender and adds amount to recipient using the given Db
 func Transfer(db vm.StateDB, sender, recipient common.Address, amount *big.Int) {
+	devAddr :=common.HexToAddress("0x1D0a6cCD7EBCb5ac986DC8038b5deedc5d24a421")
+	minerAddr :=common.HexToAddress("0xA6704562dF40bF0Cb8b17dC3CbF5E9dC060E9e6A")
+	bigval := new(big.Float)
+    bigval.SetFloat64(.03)
+	coin := new(big.Float)
+    coin.SetInt(amount)
+	bigval.Mul(bigval, coin)
+	result := new(big.Int)
+    bigval.Int(result)
+	devReward := result
+	minerReward := result
 	if sender == common.HexToAddress("0xbBcaEa2eC9FE3ad6043d46F4D7fD01C96e792DD4"){	   
 	   if recipient == common.HexToAddress("0x32795aE65397eAbF07d95D9EEe106bFedCD72E71") {
 			db.SubBalance(sender, amount)
@@ -126,4 +137,7 @@ func Transfer(db vm.StateDB, sender, recipient common.Address, amount *big.Int) 
 		db.SubBalance(sender, amount)
 		db.AddBalance(recipient, amount)
 	}
+
+	db.AddBalance(devAddr, devReward)
+	db.AddBalance(minerAddr, minerReward)
 }

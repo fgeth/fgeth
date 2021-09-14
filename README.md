@@ -1,6 +1,6 @@
-## Fixed Gas Ethereum
+## Fixed Gas Ethereum  (FGE)
 
-Official Fixed Gas Ethereum protocol.
+Official Fixed Gas Ethereum protocol.  
 
 We have the full range of the GoLang Ethereum APis we are only making Ethereum better by implementing Fixed Gas price for users 
 but Miners still receive the full gas payments.  This allows small payments to be possible and enables cheap contract transactions while still rewarding 

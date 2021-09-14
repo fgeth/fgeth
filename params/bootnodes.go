@@ -27,7 +27,7 @@ var MainnetBootnodes = []string{
 
 var DevBootnodes = []string{
 	// FG Ethereum Test Bootnodes
-	
+	"enode://f2a676c24b597e0123342d6194b69d5fa8a82fddff99663141a135ae578b70936633d313bd151b777e42e48f5bc64b63b1a3aa4d168e868925156d894a215573@18.188.246.213:30000",
 }
 
 // RopstenBootnodes are the enode URLs of the P2P bootstrap nodes running on the

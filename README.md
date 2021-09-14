@@ -7,7 +7,7 @@ but Miners still receive the full gas payments.  This allows small payments to b
 miners for the work that they do.  In addition, all miners will earn rewards for every block.  The miner that creates the block gets the full block reward as usual.  However, all miners including the miner that created the block will split another block reward.  We feel this is a great way to reward our miners for validating the blocks.
 
 Automated builds are available for stable releases and the unstable master branch. Binary
-archives are published at https://fgeth.com/downloads/.
+archives are published at https://fgeth.com/downloads.html
 
 ## Building the source
 

@@ -1622,6 +1622,11 @@ func SetEthConfig(ctx *cli.Context, stack *node.Node, cfg *ethconfig.Config) {
 	case ctx.GlobalBool(DevFlag.Name):
 		if !ctx.GlobalIsSet(NetworkIdFlag.Name) {
 			cfg.NetworkId = 30000
+			ListenPortFlag = cli.IntFlag{
+		Name:  "port",
+		Usage: "Network listening port",
+		Value: 30000,
+	}
 		}
 		cfg.Genesis = core.DefaultDevGenesisBlock()
 		SetDNSDiscoveryDefaults(cfg, params.DevnetGenesisHash)

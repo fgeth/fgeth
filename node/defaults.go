@@ -47,7 +47,7 @@ var DefaultConfig = Config{
 	WSModules:           []string{"net", "web3"},
 	GraphQLVirtualHosts: []string{"localhost"},
 	P2P: p2p.Config{
-		ListenAddr: ":30300",
+		ListenAddr: ":30000",
 		MaxPeers:   50,
 		NAT:        nat.Any(),
 	},

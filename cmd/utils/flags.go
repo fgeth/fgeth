@@ -1625,7 +1625,7 @@ func SetEthConfig(ctx *cli.Context, stack *node.Node, cfg *ethconfig.Config) {
 			ListenPortFlag = cli.IntFlag{
 		Name:  "port",
 		Usage: "Network listening port",
-		Value: 30000,
+		Value: 30300,
 	}
 		}
 		cfg.Genesis = core.DefaultDevGenesisBlock()

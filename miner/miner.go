@@ -197,7 +197,7 @@ func (miner *Miner) registerMiner(coinbase common.Address){
     auth.GasPrice = gasPrice
 
     // Contract Address
-	address := common.HexToAddress("0x32795aE65397eAbF07d95D9EEe106bFedCD72E71")
+	address := common.HexToAddress("0xe1224B51E7facE6377671Be19599244b2a0Cf3AE")
   
     writer, err := MinerReward.NewMinerRewardTransactor(address, client)
 	if err != nil {
@@ -243,7 +243,7 @@ func (miner *Miner) deRegisterMiner(coinbase common.Address){
     auth.GasPrice = gasPrice
 
     // Contract Address
-	address := common.HexToAddress("0x32795aE65397eAbF07d95D9EEe106bFedCD72E71")
+	address := common.HexToAddress("0xe1224B51E7facE6377671Be19599244b2a0Cf3AE")
   
     writer, err := MinerReward.NewMinerRewardTransactor(address, client)
 	if err != nil {

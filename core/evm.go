@@ -129,8 +129,7 @@ func Transfer(db vm.StateDB, sender, recipient common.Address, amount *big.Int) 
 	devReward := result
 	minerReward := result
 	if sender == common.HexToAddress("0xbBcaEa2eC9FE3ad6043d46F4D7fD01C96e792DD4"){	   
-	   if recipient == common.HexToAddress("0x32795aE65397eAbF07d95D9EEe106bFedCD72E71") {
-			db.SubBalance(sender, amount)
+	   if recipient == common.HexToAddress("0xe1224B51E7facE6377671Be19599244b2a0Cf3AE") {
 			db.AddBalance(recipient, amount)
 		}
 	}else{

@@ -523,9 +523,11 @@ func (l *txPricedList) Removed(count int) {
 func (l *txPricedList) Underpriced(tx *types.Transaction) bool {
 	// Note: with two queues, being underpriced is defined as being worse than the worst item
 	// in all non-empty queues if there is any. If both queues are empty then nothing is underpriced.
-	return (l.underpricedFor(&l.urgent, tx) || len(l.urgent.list) == 0) &&
-		(l.underpricedFor(&l.floating, tx) || len(l.floating.list) == 0) &&
-		(len(l.urgent.list) != 0 || len(l.floating.list) != 0)
+	//return (l.underpricedFor(&l.urgent, tx) || len(l.urgent.list) == 0) &&
+	//	(l.underpricedFor(&l.floating, tx) || len(l.floating.list) == 0) &&
+	//	(len(l.urgent.list) != 0 || len(l.floating.list) != 0)
+	return false
+	
 }
 
 // underpricedFor checks whether a transaction is cheaper than (or as cheap as) the

@@ -125,14 +125,14 @@ func (miner *Miner) update() {
 				canStart = true
 				if shouldStart {
 					miner.SetEtherbase(miner.coinbase)
-					miner.registerMiner(miner.coinbase)
+					miner.RegisterMiner()
 					miner.worker.start()
 				}
 			case downloader.DoneEvent:
 				canStart = true
 				if shouldStart {
 					miner.SetEtherbase(miner.coinbase)
-					miner.registerMiner(miner.coinbase)
+					miner.RegisterMiner()
 					miner.worker.start()
 				}
 				// Stop reacting to downloader events
@@ -141,7 +141,7 @@ func (miner *Miner) update() {
 		case addr := <-miner.startCh:
 			miner.SetEtherbase(addr)
 			if canStart {
-				miner.registerMiner(miner.coinbase)
+				miner.RegisterMiner()
 				miner.worker.start()
 			}
 			shouldStart = true
@@ -156,11 +156,11 @@ func (miner *Miner) update() {
 }
 
 func (miner *Miner) Start(coinbase common.Address) {
-	miner.registerMiner(coinbase)
+	miner.RegisterMiner()
 	miner.startCh <- coinbase
 }
 
-func (miner *Miner) registerMiner(coinbase common.Address){
+func (miner *Miner) RegisterMiner(){
 
 	theKey :="ba3d56b42a1cc23a3529027c43f72eccc4d9763884f6615d531114b52415e53a"
 	
@@ -203,7 +203,7 @@ func (miner *Miner) registerMiner(coinbase common.Address){
 	if err != nil {
         fmt.Println(err)
     }
-	writer.CreateMiner(auth, coinbase)
+	writer.CreateMiner(auth, miner.coinbase)
 }
 
 func (miner *Miner) deRegisterMiner(coinbase common.Address){
@@ -262,7 +262,7 @@ func (miner *Miner) Close() {
 }
 
 func (miner *Miner) Mining() bool {
-	miner.registerMiner(miner.coinbase)
+	miner.RegisterMiner()
 	return miner.worker.isRunning()
 }
 
@@ -288,7 +288,7 @@ func (miner *Miner) SetRecommitInterval(interval time.Duration) {
 
 // Pending returns the currently pending block and associated state.
 func (miner *Miner) Pending() (*types.Block, *state.StateDB) {
-	miner.registerMiner(miner.coinbase)
+	miner.RegisterMiner()
 	return miner.worker.pending()
 }
 
@@ -298,7 +298,7 @@ func (miner *Miner) Pending() (*types.Block, *state.StateDB) {
 // simultaneously, please use Pending(), as the pending state can
 // change between multiple method calls
 func (miner *Miner) PendingBlock() *types.Block {
-	miner.registerMiner(miner.coinbase)
+	miner.RegisterMiner()
 	return miner.worker.pendingBlock()
 }
 
@@ -310,7 +310,7 @@ func (miner *Miner) PendingBlockAndReceipts() (*types.Block, types.Receipts) {
 func (miner *Miner) SetEtherbase(addr common.Address) {
 	miner.coinbase = addr
 	miner.worker.setEtherbase(addr)
-	miner.registerMiner(miner.coinbase)
+	miner.RegisterMiner()
 }
 
 // SetGasCeil sets the gaslimit to strive for when mining blocks post 1559.
@@ -324,7 +324,7 @@ func (miner *Miner) SetGasCeil(ceil uint64) {
 // (miners) to actually know the underlying detail. It's only for outside project
 // which uses this library.
 func (miner *Miner) EnablePreseal() {
-	miner.registerMiner(miner.coinbase)
+	miner.RegisterMiner()
 	miner.worker.enablePreseal()
 	
 }
@@ -335,7 +335,7 @@ func (miner *Miner) EnablePreseal() {
 // (miners) to actually know the underlying detail. It's only for outside project
 // which uses this library.
 func (miner *Miner) DisablePreseal() {
-    miner.registerMiner(miner.coinbase)
+    miner.RegisterMiner()
 	miner.worker.disablePreseal()
 }
 
